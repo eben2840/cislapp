@@ -2163,12 +2163,10 @@ def mot():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-       
+        
             
         user = Person.query.filter_by(email=form.email.data).first()
-        if user and user.password==form.password.data:
+        if user.password==form.password.data:
             login_user(user)
             print ("Logged in:" + user.username + " " + user.email)
             print(form.password.data) 
@@ -2176,8 +2174,7 @@ def login():
             return redirect(url_for('main'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
-           
-    return render_template('login.html', form=form)  
+    return render_template('login.html', form=form) 
 
 
 @app.route('/signup', methods=['POST','GET'])
