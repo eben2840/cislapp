@@ -864,30 +864,24 @@ def landing():
 def pages():
     return render_template('pages.html')
 
-@app.route('/basee', methods=['GET', 'POST'])
-def basee():
-    return render_template('basee.html')
+@app.route('/base', methods=['GET', 'POST'])
+def base():
+    return render_template('base.html')
 
 @app.route('/landingpage', methods=['GET', 'POST'])
+@login_required
 def landingpage():
     
-    if 'message' in session and 'category' in session:
-        message = session.pop('message')
-        category = session.pop('category')
-        flash(message, category)
-        
-        
-    current_hour = datetime.datetime.now().hour
+    current_hour = datetime.now().hour
     greeting = ""
     
     if current_hour < 12:
-        greeting = "Good morning."
+        greeting = "Good morning"
     elif current_hour < 17:
-        greeting = "Good afternoon."
+        greeting = "Good afternoon"
     else:
-        greeting = "Good evening."
+        greeting = "Good evening"
         
-    total_message = Committee.query.count()
     form=WaitForm()
     if form.validate_on_submit():
         wait=Waitlist(
@@ -897,19 +891,35 @@ def landingpage():
         db.session.commit()
         send_email()
         print(form.email.data)
-        flash("Invitation Sent to" + users.email)
-        return redirect('homelook')
+       
+        flash("Invitation Sent to" + ' ' + wait.email)
+        return redirect('main')
+    print(form.errors)
+   
+    current_time = datetime.now()
+    # all_product= User.query.count()
+    # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
+    outstock = db.session.query(Item).filter(Item.quantity < 5).count()
     
+    users = Budget.query.order_by(Budget.id.desc()).all()
+    total_budget = sum(int(user.budget) for user in users)  # Convert budget to int before summation
     
-     # all_product= User.query.count()
-    low_quantity_flash = session.pop('low_quantity_flash', None)
+    weekly_work = calculate_weekly_work()
+    workload_limit = 1000  # Assuming a predefined workload limit of 1000 units
+    workload_percentage = calculate_workload_percentage(weekly_work, workload_limit)  
+    # outstock = db.session.query(Item).filter(Item.quantity < 5).count()
     total_students = User.query.count()
+    instock = Item.query.count()
     total_getfundstudents = Getfunds.query.count()
     total_Faq = Faq.query.count()
     total_challenges = Challenge.query.count()
     total_message = Committee.query.count()
+    total_stock = Item.query.count()
+    total_cat = Groups.query.filter_by(userId=current_user.id).count()
     users_with_positions = db.session.query(User.fullname, User.position).filter(User.position.isnot(None)).all()
     total_people_with_positions = db.session.query(User).filter(User.position != '').count()
+   
+   
     # total_people_with_positions = db.session.query(User).filter(User.position.isnot(None)).count()
     message = Message.query.count()
     print(users_with_positions)
@@ -923,18 +933,13 @@ def landingpage():
     print(total_leaders)
     online =Person.query.order_by(Person.id.desc()).all()
     print(current_user)
-    
-    print(form.errors)
-    users =Person.query.order_by(Person.id.desc()).all()
-    
-    print("-------------")
-    print(users)
-    print("-------------")
-    
-    return render_template('landingpage.html',total_message=total_message, greeting=greeting, users=users, form=form,
-          
-                        low_quantity_flash=low_quantity_flash, total_challenges=total_challenges,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges                 
-                           )
+    # flash(f"There was a problem", 'success')
+    if current_user == None:
+        flash("Welcome to the Dashboard" + current_user.email, "Success")
+        flash(f"There was a problem")
+    return render_template('landingpage.html',outstock=outstock, instock=instock, title='dashboard',user=user, form=form,
+          total_budget=total_budget,   workload_percentage=workload_percentage,        current_time=current_time, total_cat=total_cat,  total_stock=total_stock, greeting=greeting, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
+
 
 
 # @app.route('/inventory', methods=['GET', 'POST'])
@@ -1021,8 +1026,8 @@ def cisl():
                     "Name_Of_Contact = " + cisl.name_of_contact + '\n' + 
                     "Contact_Number = " + cisl.contact_number 
                     )  
-        # flash("You just sent your claims", "success")
-        return redirect('https://coreinsurancelimited.com/thank.html')
+        flash("You just sent a new claim", "success")
+        return redirect('main')
     print(form.errors) 
     
     return render_template('cisl.html', form=form)
@@ -1319,21 +1324,16 @@ def support():
 def stockmaster():
     return render_template("stockmaster.html")
 
-@app.route('/features', methods=['GET', 'POST'])
-def features():
-    return render_template("features.html")
 
-@app.route('/integration', methods=['GET', 'POST'])
-def integration():
-    return render_template("integration.html")
+
+@app.route('/claims', methods=['GET', 'POST'])
+def claims():
+    return render_template("claims.html")
 
 
 @app.route('/', methods=['GET', 'POST'])
 def homme():
-    if current_user.is_authenticated:
-        return redirect(url_for('homelook'))
-    else:
-        return render_template("homme.html")
+        return render_template("index1.html")
 
 @app.route('/thank', methods=['GET', 'POST'])
 def thank():
@@ -1378,9 +1378,75 @@ def constitution():
 
        
 @app.route('/person', methods=['GET', 'POST'])
+@login_required
 def person():
-    # users=Committee.query.order_by(Committee.id.desc()).all()
-    return render_template("person.html")
+    current_hour = datetime.now().hour
+    greeting = ""
+    
+    if current_hour < 12:
+        greeting = "Good morning"
+    elif current_hour < 17:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+        
+    form=WaitForm()
+    if form.validate_on_submit():
+        wait=Waitlist(
+            email=form.email.data
+            )
+        db.session.add(wait)
+        db.session.commit()
+        send_email()
+        print(form.email.data)
+       
+        flash("Invitation Sent to" + ' ' + wait.email)
+        return redirect('main')
+    print(form.errors)
+   
+    current_time = datetime.now()
+    # all_product= User.query.count()
+    # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
+    outstock = db.session.query(Item).filter(Item.quantity < 5).count()
+    
+    users = Budget.query.order_by(Budget.id.desc()).all()
+    total_budget = sum(int(user.budget) for user in users)  # Convert budget to int before summation
+    
+    weekly_work = calculate_weekly_work()
+    workload_limit = 1000  # Assuming a predefined workload limit of 1000 units
+    workload_percentage = calculate_workload_percentage(weekly_work, workload_limit)  
+    # outstock = db.session.query(Item).filter(Item.quantity < 5).count()
+    total_students = User.query.count()
+    instock = Item.query.count()
+    total_getfundstudents = Getfunds.query.count()
+    total_Faq = Faq.query.count()
+    total_challenges = Challenge.query.count()
+    total_message = Committee.query.count()
+    total_stock = Item.query.count()
+    total_cat = Groups.query.filter_by(userId=current_user.id).count()
+    users_with_positions = db.session.query(User.fullname, User.position).filter(User.position.isnot(None)).all()
+    total_people_with_positions = db.session.query(User).filter(User.position != '').count()
+   
+   
+    # total_people_with_positions = db.session.query(User).filter(User.position.isnot(None)).count()
+    message = Message.query.count()
+    print(users_with_positions)
+    user =Committee.query.order_by(Committee.id.desc()).all()
+    # total_male = User.query.filter_by(gender='Male').count()
+    # total_female = User.query.filter_by(gender='Female').count() 
+    users=User.query.order_by(User.id.desc()).all()
+    challenges=Challenges.query.order_by(Challenges.id.desc()).all()
+    print(users)
+    total_leaders = Leaders.query.count()
+    print(total_leaders)
+    online =Person.query.order_by(Person.id.desc()).all()
+    print(current_user)
+    # flash(f"There was a problem", 'success')
+    if current_user == None:
+        flash("Welcome to the Dashboard" + current_user.email, "Success")
+        flash(f"There was a problem")
+    return render_template('person.html',outstock=outstock, instock=instock, title='dashboard',user=user, form=form,
+          total_budget=total_budget,   workload_percentage=workload_percentage,        current_time=current_time, total_cat=total_cat,  total_stock=total_stock, greeting=greeting, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
 
        
 @app.route('/personid', methods=['GET', 'POST'])
@@ -1441,11 +1507,11 @@ def main():
     greeting = ""
     
     if current_hour < 12:
-        greeting = "Good morning."
+        greeting = "Good morning"
     elif current_hour < 17:
-        greeting = "Good afternoon."
+        greeting = "Good afternoon"
     else:
-        greeting = "Good evening."
+        greeting = "Good evening"
         
     form=WaitForm()
     if form.validate_on_submit():
@@ -1465,7 +1531,7 @@ def main():
     # all_product= User.query.count()
     # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
     outstock = db.session.query(Item).filter(Item.quantity < 5).count()
-    
+    users=Cisl.query.order_by(Cisl.id.desc()).all()
     users = Budget.query.order_by(Budget.id.desc()).all()
     total_budget = sum(int(user.budget) for user in users)  # Convert budget to int before summation
     
@@ -1528,11 +1594,11 @@ def homelook():
     greeting = ""
     
     if current_hour < 12:
-        greeting = "Good morning."
+        greeting = "Good morning"
     elif current_hour < 17:
         greeting = "Good afternoon"
     else:
-        greeting = "Good evening."
+        greeting = "Good evening"
     
     # all_product= User.query.count()
     current_time = datetime.now()

@@ -42,14 +42,17 @@
 
   <header class="header" data-header>
     <div class="container">
-      <b style="font-size:20px;" class="text-danger">🚀 AbiTrack</b>
-     
+      <div class="logo">
+        <a href="index.html"><img src="static/cisl/img/web2.png" style="width:50px;" alt="#"></a>
+      </div>
       <a href="#" class="logo"></a>
 
       <nav class="navbar" data-navbar>
 
         <div class="wrapper">
-          <a href="/main" >  <b style="font-size:20px;" class="text-light bg-danger border-2 p-5">Need Help? </b></a>
+          <div class="logo">
+            <a href="index.html"><img src="static/cisl/img/web2.png" style="width:50px;" alt="#"></a>
+          </div>
 
           <a href="#" class="logo"></a>
 
@@ -59,15 +62,6 @@
         
 
       </nav>
-      
-      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
-        <ion-icon name="menu-outline" aria-hidden="true"></ion-icon>
-      </button>
-
-
-      <a href="/main" class="btn btn-primary has-before has-after" style="background-color:#fff; color:#000;">Go to Dashboard 👋</a>
-     
-      <div class="overlay" data-nav-toggler data-overlay></div>
 
     
     </div>
@@ -75,304 +69,193 @@
 
 
 
-
-
   <main>
-    <article>
 
-      <!-- 
-        - #HERO
-      -->
-
+    <div class="wrapper">
       
-      <section class="section hero" id="home" aria-label="hero">
+      <form class="form-signin" class="form" method="POST"> 
+        {{form.hidden_tag()}}  
+        {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger mb-3" role="alert">
+          {{ message }} 
+      </div>
+      
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+    
         
-          <div class="container">
-  
-            
-
-
-            <div class="feature-content">
-              
-            
-           
-
-{% with messages = get_flashed_messages() %}
-              {% if messages %}
-                  {% for message in messages %}
-                  <div class="alert alert-danger mb-3" role="alert">
-                      {{ message }} 
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                  
-                  {% endfor %}
-              {% endif %}
-            {% endwith %}
-
 <form id="myForm" action=""  method="POST", "GET" action="your_processing_script.php" method="post" >
 
-    {{form.hidden_tag()}}
+  {{form.hidden_tag()}}
+ 
+
+
+
+
+<!-- Step 1: File Upload -->
+<div class="step active" id="step1">
    
-
-  
-  
-
-  <!-- Step 1: File Upload -->
-  <div class="step active" id="step1">
+  <h2 class="h2 section-title">
+   Create A CISL Client  
+  </h2>
+  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is the business called? </b>
+   </h3>  
+   <h5 class="text-muted" >
      
-    <h2 class="h2 section-title">
-     Create Your   <span class="has-before">Business Profile</span>
-    </h2>
-    <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is the business called? </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      If you have not settled on a name for the business you can add a temporary name and update it later.
-     </h5> 
-     {{form.company_name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. AbiTrack")}}
+    If you have not settled on a name for the business you can add a temporary name and update it later.
+   </h5> 
+   {{form.company_name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. AbiTrack")}}
+
+
+   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is the business email? </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    We will use your email address for marketing and for Inventory.
+   </h5> 
+   {{form.company_email( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. abitrack@gmail.com")}}
+
+
+
+
+     
+           
+
+  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What category is your business?</b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    Select which category your business fall under.
+   </h5> 
+ 
+  {{form.category( class="input-field my-3 my-lg-3 mt-2 space",style="padding:20px;  border-radius:15px; width:300%px; box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+
+
+  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is your 4 unique code?</b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    Enter 4 unique code for your business. This code will use be when resetting your account.
+   </h5> 
+ 
+   {{form.username( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter 4 Unique Code", id="floatingInput",pattern="[0-9]{4}", maxlength="4")}}
 
  
-     <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is the business email? </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      We will use your email address for marketing and for Inventory.
-     </h5> 
-     {{form.company_email( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. abitrack@gmail.com")}}
-
-
-
-
-       
-             
-
-    <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What category is your business?</b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      Select which category your business fall under.
-     </h5> 
-   
-    {{form.category( class="input-field my-3 my-lg-3 mt-2 space",style="padding:20px;  border-radius:15px; width:300%px; box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
-
-
-    <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is your 4 unique code?</b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      Enter 4 unique code for your business. This code will use be when resetting your account.
-     </h5> 
-   
-     {{form.username( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter 4 Unique Code", id="floatingInput",pattern="[0-9]{4}", maxlength="4")}}
-
-   
-                  
-                <!--<input  name="category"  class="input-field my-3", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);",id="floatingInput", required="required">
-            -->
-   
-    <button type="button" class="btn btn-primary has-before has-after my-3" onclick="nextStep()">Continue ></button>
-    <a href="/integration" class=" has-before has-after" style="background-color:#fff; color:blue;">Need help Signing Up? Click Here</a>
-     
-          </div>
-
-  <!-- Step 2: User Information -->
-  <div class="step" id="step2">
-    <h2 class="h2 section-title">
-      Create Your <span class="has-before">User Profile</span>
-     </h2>
-
-     <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is your name? </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      This is used in relation to the user account.
-     </h5> 
-     {{form.name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter Full Name", id="floatingInput")}}
-
-   
-
-
-    <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is your email address? </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      Your email address will be used as your username. We will not use your email address for marketing.
-     </h5> 
-
-     {{form.email( class="input-field my-3 my-lg-3 mt-2 space", type="email", id="email",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter email", id="floatingInput")}}
-
-   
+                
+              <!--<input  name="category"  class="input-field my-3", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);",id="floatingInput", required="required">
+          -->
+ 
+  <button type="button" class="btn btn-primary has-before has-after my-3" onclick="nextStep()">Continue ></button>
   
+        </div>
+
+<!-- Step 2: User Information -->
+<div class="step" id="step2">
+  <h2 class="h2 section-title">
+    CISL Client Profile
+   </h2>
+
+   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is your name? </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    This is used in relation to the user account.
+   </h5> 
+   {{form.name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter Full Name", id="floatingInput")}}
+
+ 
 
 
-     <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What is your phone number? </b>
-     </h3>  
-     <h5 class="text-muted" >
+  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is your email address? </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    Your email address will be used as your username. We will not use your email address for marketing.
+   </h5> 
+
+   {{form.email( class="input-field my-3 my-lg-3 mt-2 space", type="email", id="email",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter email", id="floatingInput")}}
+
+ 
+
+
+
+   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What is your phone number? </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+     We will not use your phone number for marketing.
+   </h5> 
        
-       We will not use your phone number for marketing.
-     </h5> 
-         
+  
+   {{form.phone( class="input-field my-3 my-lg-3 mt-2 space",type="number", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Phone number", id="floatingInput")}}
+
+ 
+
+
+   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>What would you like to set as your account password? </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    The password must contain at least 1 digit (0-9). The password must also contain at least 1 symbol and be at least 6 characters long.
+   </h5> 
+          
+   {{form.password( class="input-field my-3 my-lg-3 mt-2 space",type="password", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter password", id="floatingInput")}}
+
+ 
+   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
+    <b>Please re-type your password:
+    </b>
+   </h3>  
+   <h5 class="text-muted" >
+     
+    Please type your password again to ensure that it was entered correctly above.
+
+
+   </h5> 
+          
+   {{form.confirm_password( class="input-field my-3 my-lg-3 mt-2 space",type="password", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Confirm password", id="floatingInput")}}
+
+ 
+   
+
+   <div class="feature-card" style="margin-bottom:10px;">
+
     
-     {{form.phone( class="input-field my-3 my-lg-3 mt-2 space",type="number", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Phone number", id="floatingInput")}}
 
+    
+
+    <div class="card-icon" >
+      <input type="checkbox" onclick="togglePasswordVisibility()" style=" justify-content: flex-start; ">
    
+    </div>
+  </div> 
 
-
-     <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>What would you like to set as your account password? </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      The password must contain at least 1 digit (0-9). The password must also contain at least 1 symbol and be at least 6 characters long.
-     </h5> 
-            
-     {{form.password( class="input-field my-3 my-lg-3 mt-2 space",type="password", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter password", id="floatingInput")}}
-
-   
-     <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-      <b>Please re-type your password:
-      </b>
-     </h3>  
-     <h5 class="text-muted" >
-       
-      Please type your password again to ensure that it was entered correctly above.
-
-
-     </h5> 
-            
-     {{form.confirm_password( class="input-field my-3 my-lg-3 mt-2 space",type="password", style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Confirm password", id="floatingInput")}}
-
-   
-     
-
-     <div class="feature-card" style="margin-bottom:10px;">
-  
-      
-
-      
-
-      <div class="card-icon" >
-        <input type="checkbox" onclick="togglePasswordVisibility()" style=" justify-content: flex-start; ">
-     
-      </div>
-    </div> 
- 
 
 <div class="bot d-flex" style="display:fex; justify-content: space-between;">
-    <button type="button" class="btn btn-primary has-before has-after" onclick="prevStep()">Previous</button>
-  {{form.submit(class="btn btn-primary has-before has-after")}}
+  <button type="button" class="btn btn-primary has-before has-after" onclick="prevStep()">Previous</button>
+{{form.submit(class="btn btn-primary has-before has-after")}}
 </div>
-<a href="/integration" class=" has-before has-after mt-5" style="background-color:#fff; color:blue;">Need help Signing Up? Click Here</a>
-<a href="/login" class=" has-before has-after mt-5" style="background-color:#fff; color:blue;">I already have an account Click Here</a>
-   
-   <!-- <button type="button" onclick="uploadFile()">Submit</button>-->
-  </div>
+
+ <!-- <button type="button" onclick="uploadFile()">Submit</button>-->
+</div>
 
 </form>
-  
+       
+    
+    </div>
 
-
-  
-              
-
-                <!-- <li>
-                  <div class="feature-card">
-  
-                    <div class="card-icon" style="--color: 174, 77%, 50%">
-                      <ion-icon name="rocket-sharp" aria-hidden="true"></ion-icon>
-                    </div>
-  
-                    <div>
-                      <h6 class="h3 card-title">Full Name</h6>
-  
-                     <!-- <p class="card-text">
-                        At Pixology we specialize in designing, building, shipping and scaling beautifu.
-                      </p>
-                      <input type="" name="" placeholder="Email" required class="input-field", style=" width:300%px;box-shadow: var(--shadow-1);",  placeholder="Fullname",id="floatingInput", required="required">
-                  
-                    </div>
-  
-                  </div>
-                </li>-->
-  
-                <!--<li>
-                  <div class="feature-card">
-  
-                    <div class="card-icon" style="--color: 241, 77%, 63%;">
-                      <ion-icon name="people-sharp" aria-hidden="true"></ion-icon>
-                    </div>
-  
-                    <div>
-                      <h3 class="h3 card-title">Didicated team</h3>
-  
-                      <p class="card-text">
-                        At Pixology we specialize in designing, building, shipping and scaling beautifu.
-                      </p>
-                    </div>
-  
-                  </div>
-                </li>-->
-               
-  
-               
-  
-            </div>
-
-            <figure class="feature-banner">
-
-              
-              <img src="static/asets/images/portfolio/Portfolio.jpg" width="582" height="585" loading="lazy" alt="feature banner"
-                class="w-100" style="margin-bottom:20px;">
-                <li>
-                  <div class="feature-card">
-  
-                    <div class="card-icon" style="--color: 343, 98%, 60%;">
-                      <ion-icon name="headset-sharp" aria-hidden="true"></ion-icon>
-                    </div>
-  
-                    <div>
-                      <h3 class="h3 card-title">24/7 hours support</h3>
-  
-                      <p class="card-text">
-                        At Pixology we specialize in designing,<br> building, shipping and scaling beautiful.
-                      </p>
-                    </div>
-  
-                  </div>
-                </li>
-  
-              </ul>
-            </figure>
-            
-  
-          </div>
-        </section>
-      </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </article>
+    
   </main>
 
 

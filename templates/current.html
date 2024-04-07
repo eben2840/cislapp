@@ -3,7 +3,12 @@
 {% block body %}
 
 
-<div class="container-fluid">
+
+    
+
+
+<div class="container-fluid" >
+
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -23,241 +28,180 @@
     </div>
 {% endif %}
 
-<!--{% if status == 'green' %}
-    <div style="width: 50px; height: 50px; background-color: green; border-radius: 50%;"></div>
-    <p>User is logged in. <a href="{{ url_for('logout') }}">Logout</a></p>
-{% else %}
-    <div style="width: 50px; height: 50px; background-color: red; border-radius: 50%;"></div>
-    <p>User is logged out. <a href="{{ url_for('login') }}">Login</a></p>
-{% endif %}-->
 
-    <div class="row g-6 mb-6" style="margin-top:20px;">
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Budget</span>
-                            <span class="h3 font-bold mb-0">${{ total_budget | int }}</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
-                                <i class="bi bi-credit-card"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>0%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">All Products</span>
-                            <span class="h3 font-bold mb-0">{{total_students}}</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
-                                <i class="bi bi-folder"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>30%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Catalog</span>
-                            <span class="h3 font-bold mb-0">{{total_cat}}</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
-                                <i class="bi bi-folder"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                            <i class="bi bi-arrow-down me-1"></i>0%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Work load</span>
-                            <span class="h3 font-bold mb-0">{{ workload_percentage }}</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
-                                <i class="bi bi-minecart-loaded"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        {% if workload_percentage < 50 %}
-                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                            <i class="bi bi-arrow-down me-1"></i>{{ workload_percentage }}%
-                        </span>
-                        {% elif workload_percentage >= 50 and workload_percentage <= 80 %}
-                        <span class="badge badge-pill bg-soft-warning text-warning me-2">
-                            <i class="bi bi-dash me-1"></i>{{ workload_percentage }}%
-                        </span>
-                        {% else %}
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>{{ workload_percentage }}%
-                        </span>
-                        {% endif %}
-                        <span class="text-nowrap text-xs text-muted">Since </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid" >
  
-        <!--<div class="col-xl-4 col-sm-6 col-12">
-            <a href="/female_users" style="text-decoration: none; color: #992621;">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Our Team</span>
-                            <span class="h3 font-bold mb-0">{{ total_female }}10</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
-                                <i class="bi bi-person"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        
-                        
-                    </div>
-                </div>
-            </div>
-        </a>
-        </div>-->
        
-        <div class="row g-6 mb-6" style="margin-top:20px;">
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card shadow border-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Out of Stock</span>
-                                <span class="h3 font-bold mb-0">{{ outstock}}</span>
+        <div class="row g-6 mb-6" style="">
+            <div class="col-xl-12 col-sm-12 col-12 ">
+                <div class="card shadow border-0 ">
+                    <div class="card-body ">
+                        <div class="row " >
+                            <div class="col ">
+                                <span class="h3  text-muted text-sm d-block">{{greeting}}, {{current_user.name}} </span>
+                                <span class="h5 font-bold mb-0">Welcome back</span>
                             </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
-                                    <i class="bi bi-bell-fill"></i>
-                                </div>
-                            </div>
+                           
                         </div>
-                        <div class="mt-2 mb-0 text-sm">
-                            <span class="badge badge-pill bg-soft-success text-success me-2">
-                                <i class="bi bi-arrow-up me-1"></i>0%
-                            </span>
-                            <span class="text-nowrap text-xs text-muted">Since </span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card shadow border-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">In Stock</span>
-                                <span class="h3 font-bold mb-0">{{total_stock}}</span>
+          
+            <div class="col-xl-4 col-sm-6 col-12 ">
+                <div class="card shadow border-0 bg-blue-100">
+                    <div class="card-body ">
+                        <div class="row " >
+                            <div class="col ">
+                                <span class="h1 font-bold mb-0">{{ outstock}}</span>
+                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Insurance listings</span>
                             </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
-                                    <i class="bi bi-bookmarks"></i>
-                                </div>
-                            </div>
+                           
                         </div>
-                        <div class="mt-2 mb-0 text-sm">
-                            <span class="badge badge-pill bg-soft-success text-success me-2">
-                                <i class="bi bi-arrow-up me-1"></i>0%
-                            </span>
-                            <span class="text-nowrap text-xs text-muted">Since </span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card shadow border-0">
+          
+            <div class="col-xl-4 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-orange-100">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Task</span>
-                                <span class="h3 font-bold mb-0">{{total_challenges}}</span>
+                                <span class="h1 font-bold mb-0">{{total_challenges}}</span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Policy listings</span>
                             </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
-                                    <i class="bi bi-clipboard"></i>
-                                </div>
-                            </div>
+                            
                         </div>
-                        <div class="mt-2 mb-0 text-sm">
-                            <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                                <i class="bi bi-arrow-down me-1"></i>0%
-                            </span>
-                            <span class="text-nowrap text-xs text-muted">Since </span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card shadow border-0">
+            <div class="col-xl-4 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-green-100">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Goals</span>
-                                <span class="h3 font-bold mb-0">{{total_Faq}}</span>
+                                <span class="h1 font-bold mb-0">{{total_Faq}}</span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Claim listings</span>
                             </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
-                                    <i class="bi bi-clock-history"></i>
-                                </div>
-                            </div>
+                            
                         </div>
-                        <div class="mt-2 mb-0 text-sm">
-                            <span class="badge badge-pill bg-soft-success text-success me-2">
-                                <i class="bi bi-arrow-up me-1"></i>0%
-                            </span>
-                            <span class="text-nowrap text-xs text-muted">Since </span>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-success" role="alert">
+              {{ message }}
+            </div>
+            
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="row g-6 mb-6">
+          
+            
+    
+          <div class="card shadow border-0 mb-7 ">
+            <div class="card-header d-flex " style="justify-content:space-between;">
+                <h5 class="mb-0">All Claims</h5>
+              <a href="/cisl">  <h5 class="mb-0 bg-primary text-white p-2" style="border-radius:5px; font-size:13px;"> <i class="bi bi-plus"></i>Add New</h5></a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">DOI</th>
+                            <th scope="col">TOI</th>
+                            <th scope="col">Contact Person</th>
+                           <th scope="col">Type of Incident</th>
+                            <th scope="col">Contact Number</th>
+                            <th scope="col">Cost</th>
+                           
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for users in users%} 
+                        <tr>
+                            <td>
+                                
+                                <a class="text-heading font-semibold" href="#">
+                                    {{users.name}}
+                                </a>
+                            </td>
+                            <td>
+                               
+                                {{users.date}}
+                            
+                            
+                                <!--<span class="badge badge-lg badge-dot">
+                                    {{users.tag}}
+                                </span>-->
+                            </td>
+    
+                            <td>
+                                {{users.time}}
+                            </td>
+                            <td>
+                                <span class="badge badge-pill bg-soft-danger text-danger me-2">
+                                    <i class="bi bi-arrow-up me-1"></i>{{ users.name_of_contact}}
+                                </span>
+                                
+                            </td>
+                            <td>
+                                <span class="badge badge-pill bg-soft-danger text-danger me-2">
+                                    <i class="bi bi-arrow-up me-1"></i>{{ users.incident}}
+                                </span>
+                                
+                            </td>
+
+                            <td>
+                               
+                              
+                                <span class="badge badge-lg badge-dot">
+                                    <i class="bg-primary"></i>{{users.contact_number}}
+                                </span>
+    
+                            </td>
+    
+                            <td>
+                                <span class="badge badge-lg badge-dot">
+                                    <i class="bg-danger"></i>{{users.cost}}
+                                </span>
+                            </td>
+                           
+                            
+                           
+    
+                            <td class="text-end">
+                                <!--<a href="#" class="btn btn-sm btn-neutral">Update</a>-->
+                                <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+    
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm">Showing 10 items per page</span>
+            </div>
+        </div>
+      
+     
+    </div>
+    
     
        <!-- <div class="card-footer border-0 py-5">
             <span class="text-muted text-sm" style="margin-left:500px; margin:">Powered by PrestoGhana</span>
