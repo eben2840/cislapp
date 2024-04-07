@@ -860,6 +860,12 @@ def landing():
     return render_template('landing.html')
 
 
+
+@app.route('/experience', methods=['GET', 'POST'])
+def experience():
+    return render_template('experience.html')
+
+
 @app.route('/pages', methods=['GET', 'POST'])
 def pages():
     return render_template('pages.html')
@@ -1298,10 +1304,10 @@ def committee():
  
 
    
-@app.route('/leadership/<int:userid>', methods=['GET', 'POST'])
-def leadership(userid):
-    profile=Committee.query.get_or_404(userid)
-    return render_template("leadership.html", profile=profile,)
+# @app.route('/leadership/<int:userid>', methods=['GET', 'POST'])
+# def leadership(userid):
+#     profile=Committee.query.get_or_404(userid)
+#     return render_template("leadership.html", profile=profile,)
 
 
    
@@ -1845,10 +1851,37 @@ def lords():
 
 # end of ministry
 
-@app.route('/female_users')
-def female_users():
-    # female_users = User.query.filter_by(gender='Female').all()
-    return render_template('female.html', female_users=female_users)
+@app.route('/insurance')
+def insurance():
+    return render_template('insurance.html')
+
+@app.route('/leadership')
+def leadership():
+    return render_template('leadership1.html')
+
+@app.route('/reinsurance')
+def reinsurance():
+    return render_template('reinsurance.html')
+
+@app.route('/products')
+def products():
+    return render_template('products.html')
+
+
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+
+@app.route('/services')
+def services():
+    return render_template('services.html')
+
+@app.route('/medical')
+def medical():
+    return render_template('medical.html')
+
+
 
 
 @app.route('/male_users')
@@ -2140,7 +2173,7 @@ def login():
             print ("Logged in:" + user.username + " " + user.email)
             print(form.password.data) 
             flash("Welcome to your dashboard " + " "  + user.company_name ,  'success')
-            return redirect(url_for('homelook'))
+            return redirect(url_for('main'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
            
