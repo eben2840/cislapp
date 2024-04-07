@@ -92,7 +92,7 @@ class Person(db.Model, UserMixin):
     username= db.Column(db.String())
     phone= db.Column(db.String()    )
     image_file = db.Column(db.String())
-    password = db.Column(db.String(128))
+    password = db.Column(db.String())
     confirm_password = db.Column(db.String(128))
     
     def __repr__(self):
@@ -1534,36 +1534,27 @@ def main():
     print(form.errors)
    
     current_time = datetime.now()
-    # all_product= User.query.count()
-    # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
-    outstock = db.session.query(Item).filter(Item.quantity < 5).count()
+   
     users=Cisl.query.order_by(Cisl.id.desc()).all()
-    # users = Budget.query.order_by(Budget.id.desc()).all()
-   
-    users_with_positions = db.session.query(User.fullname, User.position).filter(User.position.isnot(None)).all()
-    total_people_with_positions = db.session.query(User).filter(User.position != '').count()
    
    
-    # total_people_with_positions = db.session.query(User).filter(User.position.isnot(None)).count()
     message = Message.query.count()
-    print(users_with_positions)
+ 
     
-    # total_male = User.query.filter_by(gender='Male').count()
-    # total_female = User.query.filter_by(gender='Female').count() 
     
     total_claims=Cisl.query.count()
     
     print(users)
-    total_leaders = Leaders.query.count()
-    print(total_leaders)
-    online =Person.query.order_by(Person.id.desc()).all()
+    
+
+ 
     print(current_user)
-    # flash(f"There was a problem", 'success')
+ 
     if current_user == None:
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
-    return render_template('current.html',outstock=outstock, instock=instock, title='dashboard',form=form,total_claims=total_claims,
-            current_time=current_time, greeting=greeting, online=online,message=message,total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, users_with_positions=users_with_positions, challenges=challenges)
+    return render_template('current.html', instock=instock, title='dashboard',form=form,total_claims=total_claims,
+            current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
 
 
 @app.route('/homelook', methods=['GET', 'POST'])
@@ -2151,10 +2142,11 @@ def mot():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        
+        print(email)
+       
             
         user = Person.query.filter_by(email=form.email.data).first()
-        if user.password==form.password.data:
+        if user and user.password ==form.password.data:
             login_user(user)
             print ("Logged in:" + user.username + " " + user.email)
             print(form.password.data) 
@@ -2162,6 +2154,7 @@ def login():
             return redirect(url_for('main'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
+             
     return render_template('login.html', form=form) 
 
 
