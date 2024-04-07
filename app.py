@@ -1538,21 +1538,8 @@ def main():
     # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
     outstock = db.session.query(Item).filter(Item.quantity < 5).count()
     users=Cisl.query.order_by(Cisl.id.desc()).all()
-    users = Budget.query.order_by(Budget.id.desc()).all()
-    total_budget = sum(int(user.budget) for user in users)  # Convert budget to int before summation
-    
-    weekly_work = calculate_weekly_work()
-    workload_limit = 1000  # Assuming a predefined workload limit of 1000 units
-    workload_percentage = calculate_workload_percentage(weekly_work, workload_limit)  
-    # outstock = db.session.query(Item).filter(Item.quantity < 5).count()
-    total_students = User.query.count()
-    instock = Item.query.count()
-    total_getfundstudents = Getfunds.query.count()
-    total_Faq = Faq.query.count()
-    total_challenges = Challenge.query.count()
-    total_message = Committee.query.count()
-    total_stock = Item.query.count()
-    total_cat = Groups.query.filter_by(userId=current_user.id).count()
+    # users = Budget.query.order_by(Budget.id.desc()).all()
+   
     users_with_positions = db.session.query(User.fullname, User.position).filter(User.position.isnot(None)).all()
     total_people_with_positions = db.session.query(User).filter(User.position != '').count()
    
@@ -1560,11 +1547,12 @@ def main():
     # total_people_with_positions = db.session.query(User).filter(User.position.isnot(None)).count()
     message = Message.query.count()
     print(users_with_positions)
-    user =Committee.query.order_by(Committee.id.desc()).all()
+    
     # total_male = User.query.filter_by(gender='Male').count()
     # total_female = User.query.filter_by(gender='Female').count() 
-    users=User.query.order_by(User.id.desc()).all()
-    challenges=Challenges.query.order_by(Challenges.id.desc()).all()
+    
+    total_claims=Cisl.query.count()
+    
     print(users)
     total_leaders = Leaders.query.count()
     print(total_leaders)
@@ -1574,8 +1562,8 @@ def main():
     if current_user == None:
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
-    return render_template('current.html',outstock=outstock, instock=instock, title='dashboard',user=user, form=form,
-          total_budget=total_budget,   workload_percentage=workload_percentage,        current_time=current_time, total_cat=total_cat,  total_stock=total_stock, greeting=greeting, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
+    return render_template('current.html',outstock=outstock, instock=instock, title='dashboard',form=form,total_claims=total_claims,
+            current_time=current_time, greeting=greeting, online=online,message=message,total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, users_with_positions=users_with_positions, challenges=challenges)
 
 
 @app.route('/homelook', methods=['GET', 'POST'])
