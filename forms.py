@@ -238,17 +238,31 @@ class AddItemForm(FlaskForm):
     submit = SubmitField('Add Item')
     
 class Registration(FlaskForm):
-    indexnumber= StringField('indexNumber')
+    
     email = StringField('Email', validators=[DataRequired()])
     phone = StringField('Phone', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()]) 
+    # unique_code = StringField('Unique Code', validators=[DataRequired(), Length(min=8, max=8)]) 
     password = PasswordField('password_hash', validators=[DataRequired(), EqualTo('confirm_password', message='Password Must Match!')]) 
     confirm_password = PasswordField('confirm password', validators=[DataRequired()]) 
-    username = StringField('Username', validators=[DataRequired()]) 
-    company_name = StringField('company_name', validators=[DataRequired()]) 
-    company_email = StringField('company_email', validators=[DataRequired()]) 
-    category = SelectField('categories', choices=[('Category','Category'),('Manufacturing','Manufacturing'),('Cooperate', 'Cooperate'), ('Retail','Retail') ])
+    code = StringField('Code', validators=[DataRequired()]) 
+   
     submit =SubmitField('submit')
+    
+# def validate_username(self, username):
+#         user = Person.query.filter_by(username=username.data).first()
+#         if user:
+#             raise ValidationError('That username is taken. Please choose a different one.')
+
+#     def validate_email(self, email):
+#         user = Person.query.filter_by(email=email.data).first()
+#         if user:
+#             raise ValidationError('That email is already registered.')
+
+#     def validate_company_email(self, company_email):
+#         user = Person.query.filter_by(company_email=company_email.data).first()
+#         if user:
+#             raise ValidationError('That company email is already registered.')
     
 
 class AddDepartment(FlaskForm):

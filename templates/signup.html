@@ -102,39 +102,28 @@
    Create A CISL Client  
   </h2>
   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-    <b>What is the business called? </b>
+    <b>What is your Full Name </b>
    </h3>  
    <h5 class="text-muted" >
      
-    If you have not settled on a name for the business you can add a temporary name and update it later.
+    Kindly type your Full Name
    </h5> 
-   {{form.company_name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. AbiTrack")}}
+   {{form.name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. Joe Doe")}}
 
 
    <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-    <b>What is the business email? </b>
+    <b>What is your Email? </b>
    </h3>  
    <h5 class="text-muted" >
-     
-    We will use your email address for marketing and for Inventory.
+    Kindly type you Email
    </h5> 
-   {{form.company_email( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. abitrack@gmail.com")}}
+   {{form.email( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,id="floatingInput",placeholder="eg. abitrack@gmail.com")}}
 
 
 
 
      
            
-
-  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-    <b>What category is your business?</b>
-   </h3>  
-   <h5 class="text-muted" >
-     
-    Select which category your business fall under.
-   </h5> 
- 
-  {{form.category( class="input-field my-3 my-lg-3 mt-2 space",style="padding:20px;  border-radius:15px; width:300%px; box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
 
 
   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
@@ -145,7 +134,7 @@
     Enter 4 unique code for your business. This code will use be when resetting your account.
    </h5> 
  
-   {{form.username( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter 4 Unique Code", id="floatingInput",pattern="[0-9]{4}", maxlength="4")}}
+   {{form.code( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter 4 Unique Code", id="floatingInput",pattern="[0-9]{4}", maxlength="4")}}
 
  
                 
@@ -162,27 +151,8 @@
     CISL Client Profile
    </h2>
 
-   <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-    <b>What is your name? </b>
-   </h3>  
-   <h5 class="text-muted" >
-     
-    This is used in relation to the user account.
-   </h5> 
-   {{form.name( class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter Full Name", id="floatingInput")}}
-
  
 
-
-  <h3 class="" style="margin-bottom:10px; margin-top:20px; color:#000;">
-    <b>What is your email address? </b>
-   </h3>  
-   <h5 class="text-muted" >
-     
-    Your email address will be used as your username. We will not use your email address for marketing.
-   </h5> 
-
-   {{form.email( class="input-field my-3 my-lg-3 mt-2 space", type="email", id="email",style="padding:15px;  border-radius:15px; width:300%px;box-shadow: var(--shadow-1);"  ,placeholder="Enter email", id="floatingInput")}}
 
  
 

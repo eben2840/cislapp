@@ -28,6 +28,8 @@ import time
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
+import secrets
+
 
 app=Flask(__name__)
 CORS(app)
@@ -86,10 +88,10 @@ class Person(db.Model, UserMixin):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.String())
     email= db.Column(db.String())
-    company_email= db.Column(db.String())
-    company_name= db.Column(db.String())
-    category= db.Column(db.String())
-    username= db.Column(db.String())
+    
+    # category= db.Column(db.String())
+    unique_code = db.Column(db.String(12)) 
+    code= db.Column(db.String())
     phone= db.Column(db.String()    )
     image_file = db.Column(db.String())
     password = db.Column(db.String())
@@ -1357,6 +1359,19 @@ def showchallenge():
     return render_template("showchallenge.html",users=users)
 
 
+@app.route('/faq', methods=['GET', 'POST'])
+def faq():
+    return render_template("faq.html")
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    return render_template("contact.html")
+
+@app.route('/placements', methods=['GET', 'POST'])
+def placements():
+    return render_template("placements.html")
+
+
 @app.route('/task', methods=['GET', 'POST'])
 def task():
     users=Challenge.query.order_by(Challenge.id.desc()).all()
@@ -1509,6 +1524,7 @@ def adminadd():
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
 def main():
+    unique_code = current_user.unique_code
     current_hour = datetime.now().hour
     greeting = ""
     
@@ -1553,7 +1569,7 @@ def main():
     if current_user == None:
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
-    return render_template('current.html', instock=instock, title='dashboard',form=form,total_claims=total_claims,
+    return render_template('current.html',unique_code=unique_code, instock=instock, title='dashboard',form=form,total_claims=total_claims,
             current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
 
 
@@ -2120,7 +2136,7 @@ def delete(id):
 #                 return redirect(url_for('homelook'))
 #             # next = request.args.get('next')
 #             else:
-#                 flash (f'Wrong Password ', 'success')
+#                 flash (f'Wrong Password ', 's/uccess')
 #         else:
 #             flash("User not found", 'danger') 
 #     return render_template('login.html', form=form)
@@ -2146,11 +2162,13 @@ def login():
        
             
         user = Person.query.filter_by(email=form.email.data).first()
+        print(form.email.data) 
+        print(form.password.data) 
         if user and user.password ==form.password.data:
             login_user(user)
-            print ("Logged in:" + user.username + " " + user.email)
+            print ("Logged in:" + user.code + " " + user.email)
             print(form.password.data) 
-            flash("Welcome to your dashboard " + " "  + user.company_name ,  'success')
+            flash("Welcome to your dashboard " + " "  + user.name ,  'success')
             return redirect(url_for('main'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
@@ -2161,16 +2179,23 @@ def login():
 @app.route('/signup', methods=['POST','GET'])
 def signup():
     form = Registration()
-    print(form.username.data)
+    
+    
+
+    
+    print(form.code.data)
     print(form.phone.data)
     print(form.email.data)
     print(form.name.data)
-    print(form.company_name.data)
+
     print(form.password.data)
     # print(form.category.data)
     if form.validate_on_submit():
+        
+        unique_code = str(secrets.randbelow(10**12)).zfill(12)  
+        
         checkUser = Person.query.filter_by(email = form.email.data).first()
-        checkUser = Person.query.filter_by(company_email = form.company_email.data).first()
+        # checkUser = Person.query.filter_by(company_email = form.company_email.data).first()
         if checkUser:
             flash(f'This Email has already been used','danger')
             return redirect (url_for ('signup'))
@@ -2180,23 +2205,24 @@ def signup():
             flash('Please provide a valid Gmail email address.', 'danger')
             return redirect(url_for('signup'))
         
-        if len(str(form.username.data)) != 4:
+        if len(str(form.code.data)) != 4:
             flash('Unique Code must be exactly 4 digits.', 'danger')
             return redirect(url_for('signup'))
 
         password = form.password.data
+        # if len(password) < 6 or not re.search("[A-Z]", password) or not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
         if len(password) < 6 or not re.search("[A-Z]", password) or not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
             flash('Password must be at least 6 characters long, contain at least one uppercase letter, and include at least one symbol (!@#$%^&*(),.?":{}|<>).', 'danger')
             return redirect(url_for('signup'))
         else:
             user = Person(password=form.password.data,
                         confirm_password=form.confirm_password.data,
-                        company_name=form.company_name.data, 
-                        company_email=form.company_email.data, 
+                       
                         # category=form.category.data,
                         email=form.email.data,
-                        username=form.username.data, 
+                        code=form.code.data, 
                         phone=form.phone.data,
+                        unique_code=unique_code,
                         name=form.name.data)
             db.session.add(user)
             db.session.commit()
@@ -2210,33 +2236,7 @@ def signup():
             return redirect (url_for('login'))
     else:
         print(form.errors)
-    # flash (f'There was a problem', 'danger')
-    # form = Registration()
-    # print(form.username.data)
-    # print(form.phone.data)
-    # print(form.email.data)
-    # print(form.name.data)
-    # print(form.company_name.data)
-    # print(form.password.data)
-    # if request.method == "POST": 
-    #     if form.validate_on_submit():
-    #         print('Success')
-    #         user =Person(password=form.password.data,
-    #                      company_name=form.company_name.data, 
-    #                      company_email=form.company_email.data, 
-    #                      category=form.category.data,
-    #                     #  password=form.password.data,
-    #                      email=form.email.data,username=form.username.data, phone=form.phone.data, name=form.name.data)
-    #         db.session.add(user)
-    #         db.session.commit()
-            
-    #         login_user(user, remember=True)
-    #         print(current_user)
-    #         flash ('Created Successfully','success')
-         
-    #         return redirect(url_for('login'))
-    #     else:
-    #         print(form.errors)
+   
             
     return render_template('signup.html', form=form)
 

@@ -29,16 +29,20 @@
 {% endif %}
 
 
- 
+
        
         <div class="row g-6 mb-6" style="">
             <div class="col-xl-12 col-sm-12 col-12 ">
                 <div class="card shadow border-0 ">
                     <div class="card-body ">
                         <div class="row " >
+                            
                             <div class="col ">
-                                <span class="h3  text-muted text-sm d-block">{{greeting}}, {{current_user.name}} </span>
-                                <span class="h5 font-bold mb-0">Welcome back</span>
+                                {% if unique_code %}
+                                <span class="h3  text-muted text-sm d-block">Welcome back</span>
+                                
+                                <span class="h5 font-bold mb-0">Your CISL ID: {{ unique_code }} </span>
+                                {% endif %}
                             </div>
                            
                         </div>
