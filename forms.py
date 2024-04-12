@@ -237,6 +237,17 @@ class AddItemForm(FlaskForm):
     price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Add Item')
     
+class HospitalForm(FlaskForm):
+    idcard = StringField('ID')
+    name = StringField('Name')
+    patient_name = StringField('Patient_name')
+    facility = StringField('Facility', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
+    expense = SelectField('tag', choices=[('Tag','Tag'),('Outpatient', 'Outpatient'), ('Inpatient','Inpatient') ], default=None )
+    amount = StringField('amount', validators=[DataRequired()])
+    # tag= SelectField('tag', choices=[('Tag','Tag'),('High', 'High'), ('Medium','Medium'), ('Low','Low') ], default=None )
+    submit = SubmitField('Send Form')
+    
 class Registration(FlaskForm):
     
     email = StringField('Email', validators=[DataRequired()])

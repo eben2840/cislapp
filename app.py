@@ -226,6 +226,19 @@ class Cisl(db.Model,UserMixin):
     def __repr__(self):
         return f"User('{self.id}', {self.name}, {self.description}'"
     
+class Hospital(db.Model,UserMixin):
+    id= db.Column(db.Integer, primary_key=True)
+    idcard= db.Column(db.String())
+    name = db.Column(db.String)  
+    patient_name= db.Column(db.String()     )
+    facility = db.Column(db.String() )  # Add start_date field
+    location = db.Column(db.String())
+    expense = db.Column(db.String())
+    amount = db.Column(db.String())
+    def __repr__(self):
+        return f"User('{self.id}', {self.name}, {self.patient_name}'"
+    
+
 
 class Challenges(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
@@ -1039,6 +1052,30 @@ def cisl():
     print(form.errors) 
     
     return render_template('cisl.html', form=form)
+
+
+
+
+@app.route('/hospital', methods=['POST','GET'])
+def hospital():
+    form = HospitalForm()
+    if form.validate_on_submit():
+        hospital= Hospital(
+                idcard=form.idcard.data,        
+                name=form.name.data,        
+                   patient_name=form.patient_name.data,
+                   facility=form.facility.data,
+                   location=form.location.data,
+                   expense=form.expense.data,
+               amount=form.amount.data,
+               )
+        print(hospital)
+        db.session.add(hospital)
+        db.session.commit()
+        flash("Medical Scheme Utilisation Sent", "success")
+        return redirect('/')
+    print(form.errors) 
+    return render_template('hospital.html', form=form)
 
 
 @app.route('/addalumni', methods=['GET', 'POST'])
