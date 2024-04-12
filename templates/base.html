@@ -193,6 +193,17 @@
 				</div>
 			</div>
 			<!--/ End Header Inner -->
+			{{form.hidden_tag()}}  
+        {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success mb-3" role="alert">
+          {{ message }} 
+      </div>
+      
+      {% endfor %}
+  {% endif %}
+{% endwith %}
 		</header>
 		
 		<!-- End Header Area -->
@@ -200,6 +211,7 @@
 		<!-- Slider Area -->
 		
     {% block body %}
+	
     {% endblock %}
 
 		
