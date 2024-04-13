@@ -19,14 +19,10 @@ class RegistrationForm(FlaskForm):
 
 class Adduser(FlaskForm):
     fullname = StringField('fullname')
-#    
-
-    campus= SelectField('campus', choices=[('Demand','Demand'),('High', 'High'), ('Medium','Medium'), ('Low','Low') ], default=None )
-
-   
+    campus= SelectField('campus', choices=[('Gender','Gender'),('Male', 'Male'), ('Female','Female') ], default=None )
     reason= StringField('reason')
     qualities= StringField('qualities')
-   
+    code= StringField('Code')
     position= StringField('position')
     image_file = StringField('image_file', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Send')
@@ -236,6 +232,20 @@ class AddItemForm(FlaskForm):
     tag= SelectField('tag', choices=[('Tag','Tag'),('High', 'High'), ('Medium','Medium'), ('Low','Low') ], default=None )
     price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Add Item')
+    
+  
+
+class CreateclientForm(FlaskForm):
+    name = StringField('Name')
+    email = StringField('Email')
+    # unique_code = StringField('unique_code', validators=[DataRequired()])
+    code = StringField('Code', validators=[DataRequired()])
+    # expense = SelectField('tag', choices=[('Tag','Tag'),('Outpatient', 'Outpatient'), ('Inpatient','Inpatient') ], default=None )
+    phone = StringField('Phone', validators=[DataRequired()])
+    image_file  = StringField('image_file', validators=[FileAllowed(['jpg', 'png'])])
+    gender= SelectField('gender', choices=[('Gender','Gender'),('Male', 'Male'), ('Female','Female') ], default=None )
+    submit = SubmitField('Send Form')
+    
     
 class HospitalForm(FlaskForm):
     idcard = StringField('ID')

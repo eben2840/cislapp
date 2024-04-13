@@ -102,7 +102,7 @@
 				Therefore, we strongly encourage you to promptly notify us by logging into your account to tell us of any incidents that may give rise to a claim. This will not only help you comply with the essential terms and conditions of your insurance policy but also ensure that you receive the necessary support and guidance throughout the claims process.</li>
 			
 			<div class="button">
-				<a href="/makeclaim" target="_blank" class="btn border-4">Submit Claims Online</a>
+				<a href="/main" target="_blank" class="btn border-4">Submit Claims Online</a>
 			</div>
 			
 		</ul>
@@ -151,16 +151,15 @@
 								<!-- End Mobile Nav -->
 							</div>
 							<div class="col-lg-7 col-md-9 col-12">
-								<!-- Main Menu -->
+							
 								<div class="main-menu">
-									<nav class="navigation">
+									<!--<nav class="navigation">
 										<ul class="nav menu">
-											<li><a href="#">Products <i class="icofont-rounded-down"></i></a>
-												<ul class="dropdown">
-													<li><a href="/hospital">Medical Administration</a></li>
-													
-												</ul>
+											
+											<li class=""><a href="products">Products</a>
+											
 											</li>
+											
 											<li><a href="/claims">Claims</a></li>
 											<li><a href="#">About Us <i class="icofont-rounded-down"></i></a>
 												<ul class="dropdown">
@@ -174,46 +173,33 @@
 												<ul class="dropdown">
 													<li><a href="/faq">FAQ</a></li>
 													<li><a href="/placements">Insurance placements</a></li>
+													<li><a href="/hospital">medical administration</a></li>
 													
 												</ul>
 											</li>
 											<li><a href="/contact">Contact Us</a></li>
 										</ul>
-									</nav>
+									</nav>-->
 								</div>
 								<!--/ End Main Menu -->
 							</div>
 							<div class="col-lg-2 col-12">
-								<div class="get-quote" style="background-color: green; border-radius:30px;">
+								<!--<div class="get-quote" style="background-color: green; border-radius:30px;">
 									<a href="/main" style="background-color:#2E2D7F; border-radius:30px;" class="btn">Login account</a>
-								</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--/ End Header Inner -->
-			{{form.hidden_tag()}}  
-        {% with messages = get_flashed_messages() %}
-  {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-success mb-3" role="alert">
-          {{ message }} 
-      </div>
-      
-      {% endfor %}
-  {% endif %}
-{% endwith %}
-		</header>
-		
 		<!-- End Header Area -->
 		
-		<!-- Slider Area -->
+		<!-- Error Page -->
+		<section class="error-page section">
+			
+		</section>	
+		<!--/ End Error Page -->
 		
-    {% block body %}
-	
-    {% endblock %}
-
 		
 		<!-- Footer Area -->
 		<footer id="footer" class="footer ">

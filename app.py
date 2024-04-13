@@ -163,7 +163,9 @@ class User(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
     fullname= db.Column(db.String())
     position= db.Column(db.String())
+    unique_code = db.Column(db.String(12)) 
     qualities = db.Column(db.String())
+    code = db.Column(db.String())
     reason = db.Column(db.String())
     campus= db.Column(db.String())
     image_file = db.Column(db.String(255))
@@ -206,7 +208,21 @@ class Faq(db.Model,UserMixin):
     def __repr__(self):
         return f"User('{self.id}', {self.caption}, {self.answers}'"
     
+
     
+class Createclient(db.Model,UserMixin):
+    id= db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String()) 
+    email = db.Column(db.String()     )
+    unique_code = db.Column(db.String(12)) 
+    code= db.Column(db.String())
+    gender = db.Column(db.String())
+    phone= db.Column(db.String()    )
+    image_file = db.Column(db.String())  
+    def __repr__(self):
+        return f"Createclient('{self.id}', {self.name}, {self.email}'"
+    
+      
 class Cisl(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.String())
@@ -1056,6 +1072,9 @@ def cisl():
 
 
 
+
+
+
 @app.route('/hospital', methods=['POST','GET'])
 def hospital():
     form = HospitalForm()
@@ -1079,15 +1098,17 @@ def hospital():
     return render_template('hospital.html', form=form)
 
 
-@app.route('/addalumni', methods=['GET', 'POST'])
-def addalumni():
-    form=Adduser()
+
+@app.route('/client', methods=['GET', 'POST'])
+def client():
+    form=CreateclientForm()
     if form.validate_on_submit():
-            new=User(fullname=form.fullname.data,        
-                   position=form.position.data,
-                   reason=form.reason.data,
-                   campus=form.campus.data,
-                   qualities=form.qualities.data,
+            new=Createclient(name=form.name.data,        
+                   email=form.email.data,
+                   phone=form.phone.data,
+                   gender=form.gender.data,
+                   code=form.code.data,
+                   
                image_file=form.image_file.data
                   )
             db.session.add(new)
@@ -1097,7 +1118,7 @@ def addalumni():
                   "success")
             return redirect('auth')
     print(form.errors)
-    return render_template("addAlumni.html", form=form, title='addalumni')
+    return render_template("client.html", form=form, title='addalumni')
 
 static_timestamp = datetime.now() 
 
@@ -1366,15 +1387,82 @@ def support():
     return render_template("support.html")
 
 
+
 @app.route('/stockmaster', methods=['GET', 'POST'])
 def stockmaster():
     return render_template("stockmaster.html")
 
-
-
-@app.route('/claims', methods=['GET', 'POST'])
+@app.route('/claims', methods=['POST','GET'])
 def claims():
     return render_template("claims.html")
+
+@app.route('/verify_code', methods=['GET', 'POST'])
+def verify_code():
+    if request.method == 'POST':
+        unique_code = request.form.get('unique_code')
+        user = User.query.filter_by(unique_code=unique_code).first()
+        if user:
+            session['user_id'] = user.id 
+            return redirect(url_for('makeclaim'))
+        else:
+            flash('Invalid unique code. Please try again.', 'danger')
+    return render_template('verify_code.html')
+
+
+@app.route('/makeclaim', methods=['POST','GET'])
+def makeclaim():
+    user_id = session.get('user_id')
+    if user_id is None:
+        flash('Please verify your code first.', 'danger')
+        return redirect(url_for('verify_code'))
+
+    
+     
+    form = CislForm()
+    if form.validate_on_submit():
+        cisl= Cisl(
+                name=form.name.data,        
+                   date=form.date.data,
+                   time=form.time.data,
+                   incident=form.incident.data,
+                   description=form.description.data,
+               casualties=form.casualties.data,
+               employees=form.employees.data, 
+               reason=form.reason.data,
+               police=form.police.data,
+               fire_force=form.fire_force.data,
+               cost=form.cost.data,
+               claim=form.claim.data,
+               name_of_contact=form.name_of_contact.data,
+               contact_number=form.contact_number.data
+               )
+        print(cisl)
+        db.session.add(cisl)
+        db.session.commit()
+        
+        # sendtelegram("New User Claim:"
+        # )
+        sendtelegram("New Claim Notification" + '\n' + 
+                     "" + '\n' +
+                      "Name = " + cisl.name  + '\n' + 
+                    #   "Date = " + cisl.date  + '\n' + 
+                      "Time = " + cisl.time  + '\n' + 
+                      "Incident = " + cisl.incident  + '\n' + 
+                      "Description = " + cisl.description  + '\n' + 
+                    "Casualties = " + cisl.casualties  + '\n' + 
+                    "Labour Office = " + cisl.employees + '\n' + 
+                    "Indicate Reason = " + cisl.reason + '\n' + 
+                    "Police = " + cisl.police + '\n' + 
+                    "Fire_Force = " + cisl.fire_force + '\n' + 
+                    "Cost = " + cisl.cost + '\n' + 
+                    "Claim = " + cisl.claim + '\n' + 
+                    "Name_Of_Contact = " + cisl.name_of_contact + '\n' + 
+                    "Contact_Number = " + cisl.contact_number 
+                    )  
+        flash("You just sent a new claim", "success")
+        return redirect('/')
+    print(form.errors) 
+    return render_template('makeclaim.html', form=form)
 
 
 @app.route('/index1', methods=['GET', 'POST'])
@@ -1420,10 +1508,7 @@ def task():
     users=Challenge.query.order_by(Challenge.id.desc()).all()
     return render_template("task.html",users=users)
 
-@app.route('/auth', methods=['POST','GET'])
-def auth():
-    users=User.query.order_by(User.id.desc()).all()
-    return render_template("auth.html",users=users)
+
  
        
 @app.route('/annoucement', methods=['GET', 'POST'])
@@ -1545,6 +1630,7 @@ def budget():
 @app.route('/adminadd', methods=['GET', 'POST'])
 def adminadd():
     form=Adduser()
+    
     if form.validate_on_submit():
             new=User(fullname=form.fullname.data,
                     ministry=form.ministry.data,
@@ -1562,7 +1648,11 @@ def adminadd():
     return render_template("adminadd.html", form=form, title='addalumni')
 
 
-
+@app.route('/auth', methods=['POST','GET'])
+def auth():
+    
+    users=User.query.order_by(User.id.desc()).all()
+    return render_template("auth.html",users=users)
 
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
@@ -1606,7 +1696,7 @@ def main():
     print(users)
     
 
- 
+
     print(current_user)
  
     if current_user == None:
@@ -1614,6 +1704,9 @@ def main():
         flash(f"There was a problem")
     return render_template('current.html',unique_code=unique_code, instock=instock, title='dashboard',form=form,total_claims=total_claims,
             current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
+
+
+
 
 
 @app.route('/homelook', methods=['GET', 'POST'])
@@ -2201,9 +2294,7 @@ def mot():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print(email)
-       
-            
+        print(email)  
         user = Person.query.filter_by(email=form.email.data).first()
         print(form.email.data) 
         print(form.password.data) 
@@ -2216,56 +2307,68 @@ def login():
         else:
             flash(f'Incorrect details, please try again', 'danger')
              
-    return render_template('login.html', form=form) 
+    return render_template('login.html', form=form)
+ 
+@app.route('/show', methods=['GET', 'POST'])
+def show():
+    return render_template('show.html')
+    
+    
+
+
+
+@app.route('/addalumni', methods=['GET', 'POST'])
+def addalumni():
+    form=Adduser()
+    if form.validate_on_submit():
+        unique_code = secrets.token_hex(6)
+        
+        if len(str(form.code.data)) != 4:
+                flash('Unique Code must be exactly 4 digits.', 'danger')
+                return redirect(url_for('signup'))
+        else:   
+            new=User(fullname=form.fullname.data,        
+                   position=form.position.data,
+                   reason=form.reason.data,
+                   unique_code=unique_code,
+                   code=form.code.data,
+                   campus=form.campus.data,
+                   qualities=form.qualities.data,
+               image_file=form.image_file.data
+                  )
+            db.session.add(new)
+            db.session.commit()
+            
+            # send_email()
+            flash("You just added a new product","success")
+            return redirect('auth')
+    print(form.errors)
+    return render_template("addAlumni.html", form=form)
 
 
 @app.route('/signup', methods=['POST','GET'])
 def signup():
     form = Registration()
-    
-    
-
-    
-    print(form.code.data)
-    print(form.phone.data)
-    print(form.email.data)
-    print(form.name.data)
-
-    print(form.password.data)
-    # print(form.category.data)
     if form.validate_on_submit():
         
-        unique_code = str(secrets.randbelow(10**12)).zfill(12)  
+        # unique_code = str(secrets.randbelow(10**12)).zfill(12)  
         
-        checkUser = Person.query.filter_by(email = form.email.data).first()
-        # checkUser = Person.query.filter_by(company_email = form.company_email.data).first()
-        if checkUser:
-            flash(f'This Email has already been used','danger')
-            return redirect (url_for ('signup'))
-        
-        # Check if the email is a Gmail address
-        if not is_gmail_address(form.email.data):
-            flash('Please provide a valid Gmail email address.', 'danger')
-            return redirect(url_for('signup'))
         
         if len(str(form.code.data)) != 4:
             flash('Unique Code must be exactly 4 digits.', 'danger')
             return redirect(url_for('signup'))
 
         password = form.password.data
-        # if len(password) < 6 or not re.search("[A-Z]", password) or not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
         if len(password) < 6 or not re.search("[A-Z]", password) or not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
             flash('Password must be at least 6 characters long, contain at least one uppercase letter, and include at least one symbol (!@#$%^&*(),.?":{}|<>).', 'danger')
             return redirect(url_for('signup'))
         else:
             user = Person(password=form.password.data,
                         confirm_password=form.confirm_password.data,
-                       
-                        # category=form.category.data,
                         email=form.email.data,
                         code=form.code.data, 
                         phone=form.phone.data,
-                        unique_code=unique_code,
+                        # unique_code=unique_code,
                         name=form.name.data)
             db.session.add(user)
             db.session.commit()
@@ -2282,12 +2385,6 @@ def signup():
    
             
     return render_template('signup.html', form=form)
-
-# @app.route('/test_email_validation/<test_email>')
-# def test_email_validation(test_email):
-#     is_valid_email = validate_email(test_email, verify=True)
-#     return f'The email address {test_email} is {"valid" if is_valid_email else "invalid"}.'
-
 
 
 def is_gmail_address(email):

@@ -18,7 +18,7 @@
 
       <div class="card shadow border-0 mb-7">
         <div class="card-header d-flex" style="justify-content:space-between;">
-            <h5 class="mb-0">Docs</h5>
+            <h5 class="mb-0">CISL Client</h5>
           <a href="/addalumni">  <h5 class="mb-0 bg-primary text-white p-2" style="border-radius:5px; font-size:13px;"> <i class="bi bi-plus"></i>Add New</h5></a>
         </div>
         <div class="table-responsive">
@@ -26,48 +26,42 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Tags</th>
-                       
-                        <th scope="col">Comment</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">CISL ID</th>
+                        <th scope="col">Telephone</th>
+                        <th scope="col">ID CARD </th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Email</th>
                         
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {%for users in users%} 
                     <tr>
-                        <td>
+                        <td style="display:grid;">
                             <img src={{users.image_file}} class="avatar avatar-sm rounded-circle me-2">
                             <a class="text-heading font-semibold" href="#">
                                 {{users.qualities}}
                             </a>
+                            
                         </td>
 
                         <td>
-                           {{users.reason}}
+                            {{users.code}}
                         </td>
 
                         <td>
-                            {% if users.campus == 'High' %}
-                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                            <i class="bi bi-arrow-up me-1"></i>{{ users.campus }}
-                        </span>
-                        {% elif users.campus == 'Medium' %}
-                        <span class="badge badge-pill bg-soft-warning text-warning me-2">
-                            <i class="bi bi-dash me-1"></i>{{ users.campus }}
-                        </span>
-                        {% elif users.campus == 'Low' %}
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-down me-1"></i>{{ users.campus }}
-                        </span>
-
+                            {% if users %}
+                            <p> {{ users.unique_code }}</p>
                         {% else %}
-                        <span class="badge badge-pill  text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>{{ users.campus }}
-                        </span>
+                            <p>No users found.</p>
                         {% endif %}
+                        </td>
+
+                        <td>
+                            {{ users.reason }}   
                         </td>
 
                         <td>
@@ -77,17 +71,16 @@
                         </td>
 
                        
-                       
+                       <td>
+                        {{users.campus}}
+                       </td>
                        
                         <td>
                             {{users. position}} 
                         </td>
                         
                         <td class="text-end">
-                            <a href="#" class="btn btn-sm btn-neutral">Update</a>
-                            <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <a href="#" class="btn btn-sm btn-neutral">Update</a>  
                         </td>
                     </tr>
                     {%endfor%}

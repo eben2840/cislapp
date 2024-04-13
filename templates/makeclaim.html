@@ -1,0 +1,211 @@
+{% extends'base.html' %}
+{% block body %}
+		
+
+
+<section class="appointment ">
+	<div class="container input-field ">
+		
+		
+		
+
+<form action="{{ url_for('makeclaim') }}" method="post" id="myform">
+	{{ form.hidden_tag() }}
+
+	
+
+	
+
+	
+
+	<div >
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="form-group ">
+					<label style="color:#000; font-size:20px;"><b>Please fill the form below</b>
+					</label>
+					<p>This form is designed to help you comply with your insurance terms and conditions, including your duty to notify insurers of incidents likely to result in a claim.</p>
+
+				</div>
+				
+			</div>
+		</div>
+		<hr>
+		<div class="row mt-10">
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Name of Client  <span class="text-danger">*</span></label>
+						
+					<input name="name" type="text" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; "placeholder="Name of the client or the company">
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Date of Incident
+						 <span class="text-danger">*</span></label>
+						<p> {{ form.date ( class="input-field", id="floatingInput", style="width:100%; padding:20px; border:1px solid #2E2D7F; ", required="required")  }}</p> 
+
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Time of Incident
+						
+					<span class="text-danger">*</span></label>
+					<input name="time" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " type="text" placeholder="eg. 2:30">
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Type of Incident
+						
+					<span class="text-danger">*</span></label>
+					{{form.incident(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+					
+				</div>
+			</div>
+			
+		   
+			<div class="col-lg-12 col-md-12 col-12">
+				<div class="form-group">
+					<label>Description of Incident
+						
+				 <span class="text-danger">*</span></label>
+					
+					<textarea name="description" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " placeholder="Write Your description Here....."></textarea>
+				</div>
+			</div>
+
+
+			<div class="col-lg-12 col-md-12 col-12">
+				<div class="form-group mt-4">
+					<label style="color:#000; font-size:20px;">Please Choose the following.
+						
+					</label>
+					
+					
+				</div>
+			</div>
+
+	   
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Are there any casualties?
+
+						
+				 <span class="text-danger">*</span></label>
+					{{form.casualties(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+
+				</div>
+			</div>
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>If employees are involved, have you reported to the Labour Office?
+						
+					<span class="text-danger">*</span></label>
+					{{form.employees(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+
+				</div>
+			</div>
+			 <div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Indicate the reason for reporting or not reporting to the Labour Office.
+					</label>
+					<input name="reason" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " type="text" placeholder="Enter reason" >
+				</div>
+			</div>
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Have you reported the incident to the Police?
+					 <span class="text-danger">*</span></label>
+					{{form.police(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Have you reported the incident to the Fire Force?
+					<span class="text-danger">*</span></label>
+					{{form.fire_force(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+
+				</div>
+			</div>
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>What is the estimated cost of the damage
+					<span class="text-danger">*</span></label>
+					{{form.cost(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+
+				</div>
+			</div>
+
+	
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Name of contact person
+
+					<span class="text-danger">*</span></label>
+					<input name="name_of_contact" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " type="text" placeholder="Name of contact person" >
+				</div>
+			</div>
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="form-group">
+					<label>Contact number
+
+					 <span class="text-danger">*</span></label>
+					<input name="contact_number" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " type="number" placeholder="Contact number" >
+				</div>
+			</div>
+			
+		</div>
+	
+
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-12">
+				<div class="form-group"><br>
+					<label>NB<br>
+
+						All the information provided is corrected
+					</label>
+					</div>
+					{{form.claim(class="input-field " , style="border:1px solid #2E2D7F; ",  placeholder="eg.favorite docs", id="floatingInput", required="required")}}
+			
+				
+			</div>
+
+		
+			<div class="col-lg-12 col-md-12 col-12">
+				
+					<div class="form-group">
+						<div class="button"><br>
+							<button type="submit" class="btn btn-primary" style="width:100%; margin:auto;">Send Claim</button>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+  
+</form>
+
+
+</div>
+
+
+</div>
+</div>
+</section >
+
+
+
+
+{%endblock body%}

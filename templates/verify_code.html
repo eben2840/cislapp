@@ -1,0 +1,29 @@
+{% extends'base.html' %}
+{% block body %}
+
+
+
+		<!-- Error Page -->
+		<section class="error-page section">
+			<div class="container">
+				<h4>Enter CISL ID Number</h4>
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+						<ul>
+							{% for message in messages %}
+								<li>{{ message }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				{% endwith %}
+				<form action="{{ url_for('verify_code') }}" method="POST">
+					<label for="unique_code">Enter Unique Code:</label><br>
+					<input type="text" id="unique_code" name="unique_code" required>
+					<button type="submit" style="background-color:blue; padding:10px; color:#fff;">Verify</button>
+				</form>
+			</div>
+		</section>	
+		<!--/ End Error Page -->
+		
+				
+{% endblock body%}
