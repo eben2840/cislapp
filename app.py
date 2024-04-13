@@ -1383,7 +1383,7 @@ def homme():
 
 
 @app.route('/', methods=['GET', 'POST'])
-def 404():
+def working():
         return render_template("404.html")
 
 @app.route('/thank', methods=['GET', 'POST'])
