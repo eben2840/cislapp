@@ -1071,6 +1071,10 @@ def cisl():
 
 
 
+@app.route('/medicals', methods=['GET', 'POST'])
+def medicals():
+    users=Hospital.query.order_by(Hospital.id.desc()).all()
+    return render_template("medicals.html",users=users)
 
 
 
@@ -1391,6 +1395,8 @@ def support():
 @app.route('/stockmaster', methods=['GET', 'POST'])
 def stockmaster():
     return render_template("stockmaster.html")
+
+
 
 @app.route('/claims', methods=['POST','GET'])
 def claims():
@@ -1726,6 +1732,9 @@ def homelook():
         return redirect('homelook')
     
     print(form.errors)
+    total_claims=Cisl.query.count()
+    total_client=Createclient.query.count()
+    total_medicals=Hospital.query.count()
     
     current_hour = datetime.now().hour
     greeting = ""
@@ -1766,7 +1775,7 @@ def homelook():
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
     return render_template('homelook.html',instock = instock, title='dashboard',user=user, 
-                     current_time=current_time,   low_quantity_flash=low_quantity_flash, greeting=greeting, 
+               total_medicals=total_medicals,total_client=total_client,  total_claims=total_claims,    current_time=current_time,   low_quantity_flash=low_quantity_flash, greeting=greeting, 
                          form=form, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
 
 
