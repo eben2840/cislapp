@@ -1377,9 +1377,14 @@ def claims():
     return render_template("claims.html")
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/index1', methods=['GET', 'POST'])
 def homme():
         return render_template("index1.html")
+
+
+@app.route('/', methods=['GET', 'POST'])
+def 404():
+        return render_template("404.html")
 
 @app.route('/thank', methods=['GET', 'POST'])
 def thank():
