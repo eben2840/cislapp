@@ -163,6 +163,7 @@ class User(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
     fullname= db.Column(db.String())
     position= db.Column(db.String())
+    email= db.Column(db.String())
     unique_code = db.Column(db.String(12)) 
     qualities = db.Column(db.String())
     code = db.Column(db.String())
@@ -361,9 +362,8 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
     quantity = db.Column(db.String())
-    start_date = db.Column(db.Date)
-    price = db.Column(db.Date)
-    tag = db.Column(db.Date)
+    price = db.Column(db.String)
+    tag = db.Column(db.String)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id', name='ft_item_group_id'))
 
 
@@ -519,8 +519,8 @@ def group():
         db.session.add(group)
         db.session.commit()
 
-        flash("You just added a new Category")
-        return redirect(url_for('main'))
+        flash("You just added a new Client")
+        return redirect(url_for('homelook'))
 
     print(form.errors)
     return render_template('groups.html', form=form)
@@ -549,28 +549,20 @@ def add_item():
             group_id=form.group.data,
             tag=form.tag.data,
             price=form.price.data,
-            quantity=form.quantity.data,
-            start_date=form.start_date.data 
+            quantity=form.quantity.data
         )
         
         db.session.add(item)
         db.session.commit()
         
-        print(form.name.data)
-        print(form.group_id.data)
+        # print(form.name.data)
+        # print(form.group_id.data)
         
-        if item.quantity and item.quantity.isdigit():
-            quantity_value = int(item.quantity)
-            if quantity_value < 5:
-                session['low_quantity_flash'] = f"Low quantity (less than 5) of {item.name}!"
-            elif quantity_value < 10:
-                session['low_quantity_flash'] = f"Low quantity (less than 10) of {item.name}!"
-        else:
-            session['low_quantity_flash'] = f"Invalid quantity format for {item.name}. Please enter a valid number."
-
+       
             
-        flash("Item added to the group successfully")
-        return redirect(url_for('main'))
+        flash("Staff added successfully", "Success")
+
+        return redirect(url_for('homelook'))
 
     print(form.errors)
     return render_template('add_item.html', form=form)
@@ -578,7 +570,7 @@ def add_item():
     
 radio = 'yboateng057@gmail.com'
 email_password = 'hsgtqiervnkabcma'
-radio_display_name = ' Abitu Industries'
+radio_display_name = 'CISL Team'
 
 # users_data = [
 #     {'email': 'user1@example.com', 'date': '2022-01-01', 'activity': 'Activity 1', 'implementation': 'Implementation 1', 'tag': 'Tag 1', 'challenges': 'Challenges 1', 'future': 'Future 1'},
@@ -588,40 +580,64 @@ radio_display_name = ' Abitu Industries'
 def send_email():
     if request.method == 'POST':
         email_receiver = request.form['email']
+        subject = 'Welcome to CISL'
+        
+        
+        if 'user_id' in session:
+            session_user_id = session['user_id']
+            user = User.query.get(session_user_id)
+            if user:
+                unique_code = user.unique_code
+                html_content = render_template('printout.html', unique_code=unique_code)
+            else:
+                return "User not found in the database."
+   
+        
+        
+        # user = User.query.first()
+        # # HTML content of the email
+        # if user:
+        #     session['user_id'] = user.id
+        # else:
+        # # Handle the case where the user object is not found or doesn't have an ID
+        #     print("Broo you dont have access")
+# users = User.query.order_by(User.id.desc()).all()   
+        users=User.query.order_by(User.id.desc()).all()
+        html_content = render_template('printout.html',users=users, session_user_id=session['user_id'])
+        
+        # return render_template("emailsender.html",users=users)
 
-        subject = 'AbiTrack Inventory'
-        
-        
+
         # users = Logger.query.order_by(Logger.id.desc()).all()
         # HTML content of the email
         # html_content = render_template('printout.html',users=users)
-        html_content = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-            @font-face {
-                font-family: 'Plus Jakarta';
-                src: url('PlusJakartaSans-VariableFont_wght.woff2') format('woff2-variations'),
-                     url('PlusJakartaSans-Italic-VariableFont_wght.woff2') format('woff2-variations');
-                font-weight: 100 900; /* Adjust font weights based on available weights */
-                font-style: normal;
-            }
+        # html_content = """
+        # <!DOCTYPE html>
+        # <html>
+        # <head>
+        #     <style>
+        #     @font-face {
+        #         font-family: 'Plus Jakarta';
+        #         src: url('PlusJakartaSans-VariableFont_wght.woff2') format('woff2-variations'),
+        #              url('PlusJakartaSans-Italic-VariableFont_wght.woff2') format('woff2-variations');
+        #         font-weight: 100 900; /* Adjust font weights based on available weights */
+        #         font-style: normal;
+        #     }
 
-            body {
-                font-family: 'Plus Jakarta', sans-serif;
-            }
-            </style>
-        </head>
-        <body>
-                <div class="container">
-                    <div style="display:flex; padding:10px; justify-content:space-between;">
-                        AbiTrack  🚀
-                          </div>
-                     <h3 style="text-align:center; font-size:40px;">Welcome to AbiTrack Management System
+        #     body {
+        #         font-family: 'Plus Jakarta', sans-serif;
+        #     }
+        #     </style>
+        # </head>
+        # <body>
+        #         <div class="container">
+        #             <div style="display:flex; padding:10px; justify-content:space-between;">
+        #                 AbiTrack  🚀
+        #                   </div>
+        #              <h3 style="text-align:center; font-size:40px;">Welcome to AbiTrack Management System
                    
-                </h3>      
-                    <img src="https://abitu-ce1b6c8eb118.herokuapp.com/static/asets/images/portfolio/Portfolio.jpg" style="width:100%;">
+        #         </h3>      
+        #             <img src="https://abitu-ce1b6c8eb118.herokuapp.com/static/asets/images/portfolio/Portfolio.jpg" style="width:100%;">
                           
                
                 
@@ -630,12 +646,12 @@ def send_email():
               
 
                
-            </div>
+        #     </div>
             
             
-        </body>
-        </html>
-        """
+        # </body>
+        # </html>
+        # """
 
     
         em = EmailMessage()
@@ -796,6 +812,11 @@ def level200():
     sendtelegram("New User on Pasco Portal level 200")
     two = Course.query.filter_by(level='200').all()
     return render_template('level200.html', two=two)
+
+
+@app.route('/emailsender', methods=['GET', 'POST'])
+def emailsender():
+    return render_template('emailsender.html')
 
 @app.route('/level300', methods=['GET', 'POST'])
 def level300():
@@ -1402,16 +1423,28 @@ def stockmaster():
 def claims():
     return render_template("claims.html")
 
+
+
 @app.route('/verify_code', methods=['GET', 'POST'])
-def verify_code():
+def verify_code():  
+    # if request.method == 'POST':
+    #     unique_code = request.form.get('unique_code')
+    #     code = request.form.get('code')
+    #     user = User.query.filter_by(unique_code=unique_code).first()
+    #     if user and user.code:
+    #         session['user_id'] = user.id 
+    #         return redirect(url_for('makeclaim'))
+    #     else:
+    #         flash('Invalid unique code. Please try again.', 'danger')
     if request.method == 'POST':
-        unique_code = request.form.get('unique_code')
+        unique_code = request.form.get('unique_code').strip()
+        code = request.form.get('code').strip()
         user = User.query.filter_by(unique_code=unique_code).first()
-        if user:
-            session['user_id'] = user.id 
+        if user and user.code == code:
+            session['user_id'] = user.id
             return redirect(url_for('makeclaim'))
         else:
-            flash('Invalid unique code. Please try again.', 'danger')
+            flash('Invalid unique code or code. Please try again.', 'danger')
     return render_template('verify_code.html')
 
 
@@ -1478,7 +1511,8 @@ def homme():
 
 @app.route('/', methods=['GET', 'POST'])
 def working():
-        return render_template("404.html")
+        users=User.query.order_by(User.id.desc()).all()
+        return render_template("404.html",users=users)
 
 @app.route('/thank', methods=['GET', 'POST'])
 def thank():
@@ -1733,8 +1767,13 @@ def homelook():
     
     print(form.errors)
     total_claims=Cisl.query.count()
-    total_client=Createclient.query.count()
+    
+    total_client=User.query.count()
+    
     total_medicals=Hospital.query.count()
+    
+    medical_client=Groups.query.count()
+    medical_staff=Item.query.count()
     
     current_hour = datetime.now().hour
     greeting = ""
@@ -1749,7 +1788,7 @@ def homelook():
     # all_product= User.query.count()
     current_time = datetime.now()
     low_quantity_flash = session.pop('low_quantity_flash', None)
-    instock = Item.query.count()
+    
     total_students = User.query.count()
     total_getfundstudents = Getfunds.query.count()
     total_Faq = Faq.query.count()
@@ -1774,9 +1813,10 @@ def homelook():
     if current_user == None:
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
-    return render_template('homelook.html',instock = instock, title='dashboard',user=user, 
+    return render_template('homelook.html', title='dashboard',user=user,
+                           medical_client=medical_client, 
                total_medicals=total_medicals,total_client=total_client,  total_claims=total_claims,    current_time=current_time,   low_quantity_flash=low_quantity_flash, greeting=greeting, 
-                         form=form, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
+                 medical_staff=medical_staff,    form=form, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
 
 
 
@@ -2326,18 +2366,19 @@ def show():
 
 
 
-@app.route('/addalumni', methods=['GET', 'POST'])
-def addalumni():
+@app.route('/addclient', methods=['GET', 'POST'])
+def addclient():
     form=Adduser()
     if form.validate_on_submit():
         unique_code = secrets.token_hex(6)
         
-        if len(str(form.code.data)) != 4:
-                flash('Unique Code must be exactly 4 digits.', 'danger')
-                return redirect(url_for('signup'))
+        if len(str(form.code.data)) != 8:
+                flash('Unique Code must be exactly 8 digits.', 'danger')
+                return redirect(url_for('addclient'))
         else:   
             new=User(fullname=form.fullname.data,        
                    position=form.position.data,
+                   email=form.email.data,
                    reason=form.reason.data,
                    unique_code=unique_code,
                    code=form.code.data,
@@ -2348,9 +2389,10 @@ def addalumni():
             db.session.add(new)
             db.session.commit()
             
-            # send_email()
-            flash("You just added a new product","success")
-            return redirect('auth')
+            send_email()
+            flash("Welcome to CISL, " + " " + new.qualities + ". " + " Kindly Check your email for you ID Number","success")
+            return redirect('/')
+   
     print(form.errors)
     return render_template("addAlumni.html", form=form)
 
@@ -2602,7 +2644,7 @@ def readcsv():
             
             # write to db
             
-    return studentbody
+    return studentbod
     
 @app.route("/findbyid")
 def findbyid(id=None):

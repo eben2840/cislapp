@@ -21,6 +21,7 @@ class Adduser(FlaskForm):
     fullname = StringField('fullname')
     campus= SelectField('campus', choices=[('Gender','Gender'),('Male', 'Male'), ('Female','Female') ], default=None )
     reason= StringField('reason')
+    email= StringField('email')
     qualities= StringField('qualities')
     code= StringField('Code')
     position= StringField('position')
@@ -228,12 +229,11 @@ class AddItemForm(FlaskForm):
     group = SelectField('Select Group', coerce=int)
     item_name = StringField('Item Name')
     quantity = StringField('Quantity')
-    start_date = DateField('Start Date', validators=[DataRequired()])
-    tag= SelectField('tag', choices=[('Tag','Tag'),('High', 'High'), ('Medium','Medium'), ('Low','Low') ], default=None )
+    tag= StringField('Dependant')
     price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Add Item')
     
-  
+
 
 class CreateclientForm(FlaskForm):
     name = StringField('Name')

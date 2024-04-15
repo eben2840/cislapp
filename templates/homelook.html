@@ -25,15 +25,15 @@
    
      
 
-  <div class="row g-6 mb-6" style="">
-           
+  <div class="row " style="">
+    <p class="fs-5"><b>CISL Claims</b></p>      
     <div class="col-xl-4 col-sm-6 col-12">
         <div class="card shadow border-0 bg-green-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
                         <span class="h1 font-bold mb-0">{{total_claims}}</span>
-                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">Claim listings</span>
+                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">All Claims</span>
                     </div>
                     
                 </div>
@@ -42,28 +42,65 @@
         </div>
     </div>
   
-    <div class="col-xl-4 col-sm-6 col-12 ">
-        <div class="card shadow border-0 bg-blue-100">
-            <div class="card-body ">
-                <div class="row " >
-                    <div class="col ">
+   
+  
+    <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card shadow border-0 bg-green-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
                         <span class="h1 font-bold mb-0">{{total_client}}</span>
-                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Medical Administration</span>
+                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">Claims Clients</span>
                     </div>
-                   
+                    
                 </div>
                 
             </div>
         </div>
     </div>
-  
+</dvi>
+
+<div class="row g-6 mb-6" style="">
+    
+<p class="fs-5"><b> Medical Administration</b></p>
+<div class="col-xl-4 col-sm-6 col-12 ">
+    <div class="card shadow border-0 bg-orange-100">
+        <div class="card-body ">
+            <div class="row " >
+                <div class="col ">
+                    <span class="h1 font-bold mb-0">{{total_medicals}}</span>
+                    <span class="h6 font-semibold text-muted text-sm d-block mb-2">Medical Listings</span>
+                </div>
+               
+            </div>
+            
+        </div>
+    </div>
+</div>
     <div class="col-xl-4 col-sm-6 col-12">
         <div class="card shadow border-0 bg-orange-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <span class="h1 font-bold mb-0">{{total_medicals}}</span>
-                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">All Clients</span>
+                        <span class="h1 font-bold mb-0">{{medical_client}}</span>
+                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">Medical Clients</span>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+    </div>
+   
+    <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card shadow border-0 bg-orange-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <span class="h1 font-bold mb-0">{{medical_staff}}</span>
+                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">Medical Staff</span>
                     </div>
                     
                 </div>
@@ -79,13 +116,13 @@
     <div class="row">
         <div class="col-xl-6 col-sm-4 col-12" style="margin-bottom:20px;  ">
                 
-        <a href="/addalumni" style="text-decoration: none; color: #992621;">
+        <a href="/group" style="text-decoration: none; color: #992621;">
         <div class="card shadow border-1" style="">
             <div class="card-body"> 
                 <div class="row">
                     <div class="col">
                         <span class="h6 font-semibold text-muted text-sm d-block mb-2">
-                            Your overall analysis</span>
+                            Medical Administration</span>
                             <hr>
                             <div class="card-body"> 
                                <div class="row"> 
@@ -104,20 +141,20 @@
     </div>
 
     <div class="col-xl-6 col-sm-4 col-12" style="margin-bottom:20px;  ">        
-        <a href="/cisl" style="text-decoration: none; color: #992621;">
+        <a href="/add_item" style="text-decoration: none; color: #992621;">
         <div class="card shadow border-1" style="">
             <div class="card-body"> 
                 <div class="row">
                     <div class="col">
                         <span class="h6 font-semibold text-muted text-sm d-block mb-2">
-                             Your overall analysis</span>
+                            Medical Administration</span>
                              <hr>
                              <div class="card-body"> 
                                 <div class="row"> 
                                   
                                     <!---->
                                       <button type="button" style="margin-top:20px; width:230px; margin:auto; "class="btn btn-primary position-relative">
-                                          <i class="bi bi-plus"></i>   Make a Claim
+                                          <i class="bi bi-plus"></i>   Add CISL Staff
                                          </button>   
                                  </div>             
                             </div>

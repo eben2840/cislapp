@@ -56,10 +56,7 @@
 
 </head>
 
-
-<div class="loading-container" data-loading-container>
-  <div class="loading-circle"></div>
-</div>
+<body style="background-color:gray;">
 
 
 
@@ -68,75 +65,56 @@
 <!-- 
   - #HEADER
 -->
-
-<header class="header" data-header>
-  header
-  
-</header>
+<div class="container" style=" padding:30px;">
 
 
-<div class="containe" style="margin-top:120px; padding:30px;">
 
-  
-  <table class="table align-middle mb-0 bg-white">
-    <thead class="bg-light">
-      <tr>
-       <!-- <th>Email</th>-->
-        <th>Today date</th>
-        <th>Activity</th>
-        <th>Implemention</th>
-        <th>Tag</th>
-        <th>Challenges</th>
-        <th>Future Tag</th>
-        
-       
-      </tr>
-    </thead>
-    <tbody>
+
+<div class="container" style=" color:#000; padding:30px; text-align:center; background-color:white;">
+ 
+  <b> Hello!, Welcome to CISL.</b><br><br>
+   <hr>
+   Below is your Unique ID <br>
       
+ 
   
+  ID Number: 
   
+{% for user in users %}
+    {% if loop.index == 1 %}
+        <h4>{{ user.unique_code }}</h4>
+    {% endif %}
+{% endfor %}
+
+<br><br><br>
+<hr>
+ Do not give this code to anyone.!<br>
+
+  This code can be used to log in to your CISL Platform. We never ask it for anything else.<br>
+  
+</div>
+</div>
+ 
 
 
+<!--
     {%for users in users%} 
     <!--<td>
       <p class="fw-normal mb-1 fs-0">{{users.email}}</p>
-      </td>-->
+      </td>
       <td>
-        {{users.date}}
+        {{users.unique_code}}
       </td>
    
 
-      <td>
-        <p class="fw-normal mb-1 fs-0 fs-0">{{users.activity}}</p>
-       
-      </td>
-
-      <td>
-        <p class="fw-normal mb-1 fs-0 overflow-auto" >{{users.implementation}}</p>
-       
+     
       
-        <td>
-          <p class="fw-normal mb-1 fs-0 ">{{users.tag}}</p>
-          </td>
-          <td>
-            <p class="fw-normal mb-1 fs-0">{{users.challenges}}</p>
-            </td>
-            <td>
-              <p class="fw-normal mb-1 fs-0">{{users.future}}</p>
-              </td>
-
-        </a>
-       
-        </tr>
-          {%endfor%}
+          {%endfor%}-->
     
-  </tbody>
-</table>
+
   <!-- 
     - custom js link
   -->
-  <script src="static/assets/js/script.js"></script>
 
   <!-- 
     - ionicon link

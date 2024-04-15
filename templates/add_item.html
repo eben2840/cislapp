@@ -26,26 +26,27 @@
             </div>-->
         <div class="col-lg-12" style="background-color:#fff; padding:30px; border-radius:20px;">
             
-            <form method="POST" action="{{ url_for('add_item') }}" id="faqForm">
-        <h6 class="h3 font-bold mb-5" style="margin-bottom:10px;">Add Item to Category</h6>
+            <form method="POST" action="/add_item" enctype="multipart/form-data">
+        <h6 class="h3 font-bold mb-5" style="margin-bottom:10px;">Add All Staff</h6>
         {{ form.hidden_tag() }}
-       
+        Enter Staff Profile:
         {{ form.group(class="input-field", style="width:100%; ") }}
         <br>
         
-        {{ form.item_name(class="input-field", style="width:100%;" , placeholder="Item Name") }}
+        {{ form.item_name(class="input-field", style="width:100%;" , placeholder="Staff Name") }}
         <br>
        
-        {{ form.quantity(class="input-field", style="width:100%;", placeholder="Item Quantity") }}
+        {{ form.quantity(class="input-field", style="width:100%;",type=number, placeholder="Staff Number") }}
+        <br>
+        Enter Dependants Profile:
         <br> 
-        {{ form.price(class="input-field", style="width:100%;", placeholder="Price") }}
+        {{ form.price(class="input-field", style="width:100%;", placeholder="Dependant 1") }}
        
         <br>
-        {{ form.tag(class="input-field", style="width:100%;", placeholder="Item Quantity") }}
+        {{ form.tag(class="input-field", style="width:100%;", placeholder="Dependant 2") }}
        
         <br>
-        <p>{{ form.start_date.label }} {{ form.start_date( class="input-field", id="floatingInput", style="width:100%;", required="required") }}</p>
-        
+       
         {{ form.submit(class="btn btn-primary", style="width:100%;") }}
     </form>
 

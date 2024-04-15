@@ -6,19 +6,26 @@
 		<!-- Error Page -->
 		<section class="error-page section">
 			<div class="container">
-				<h4>Enter CISL ID Number</h4>
+				<h4>CISL Verifier</h4>
 				{% with messages = get_flashed_messages() %}
 					{% if messages %}
 						<ul>
 							{% for message in messages %}
-								<li>{{ message }}</li>
+							<div class="alert alert-danger mb-3" role="alert">
+								{{ message }} 
+							</div>
 							{% endfor %}
 						</ul>
 					{% endif %}
 				{% endwith %}
 				<form action="{{ url_for('verify_code') }}" method="POST">
 					<label for="unique_code">Enter Unique Code:</label><br>
-					<input type="text" id="unique_code" name="unique_code" required>
+					<input class="input-field", style="width:300px;" type="text" id="unique_code" name="unique_code" required>
+					<br><br>
+					<label for="code">Enter you Code:</label><br>
+       				<input class="input-field", style="width:300px;" type="number" id="code" name="code" required><br><br>
+        
+					
 					<button type="submit" style="background-color:blue; padding:10px; color:#fff;">Verify</button>
 				</form>
 			</div>

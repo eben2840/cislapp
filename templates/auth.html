@@ -19,7 +19,6 @@
       <div class="card shadow border-0 mb-7">
         <div class="card-header d-flex" style="justify-content:space-between;">
             <h5 class="mb-0">CISL Client</h5>
-          <a href="/addalumni">  <h5 class="mb-0 bg-primary text-white p-2" style="border-radius:5px; font-size:13px;"> <i class="bi bi-plus"></i>Add New</h5></a>
         </div>
         <div class="table-responsive">
             <table class="table table-hover table-nowrap">
@@ -53,7 +52,7 @@
                         </td>
 
                         <td>
-                            {% if users %}
+                            {% if users  %}
                             <p> {{ users.unique_code }}</p>
                         {% else %}
                             <p>No users found.</p>
