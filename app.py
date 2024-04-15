@@ -583,24 +583,15 @@ def send_email():
         subject = 'Welcome to CISL'
         
         
-        if 'user_id' in session:
-            session_user_id = session['user_id']
-            user = User.query.get(session_user_id)
-            if user:
-                unique_code = user.unique_code
-                html_content = render_template('printout.html', unique_code=unique_code)
-            else:
-                return "User not found in the database."
-   
         
         
-        # user = User.query.first()
-        # # HTML content of the email
-        # if user:
-        #     session['user_id'] = user.id
-        # else:
-        # # Handle the case where the user object is not found or doesn't have an ID
-        #     print("Broo you dont have access")
+        user = User.query.first()
+        # HTML content of the email
+        if user:
+            session['user_id'] = user.id
+        else:
+        # Handle the case where the user object is not found or doesn't have an ID
+            print("Broo you dont have access")
 # users = User.query.order_by(User.id.desc()).all()   
         users=User.query.order_by(User.id.desc()).all()
         html_content = render_template('printout.html',users=users, session_user_id=session['user_id'])
