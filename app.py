@@ -34,7 +34,8 @@ import secrets
 app=Flask(__name__)
 CORS(app)
 # 'postgresql://postgres:new_password@45.222.128.55:5432/src'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:new_password@45.222.128.55:5432/eben'
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("CENTRAL_MINISTRY_DB_URL","sqlite:///test.db")
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:new_password@45.222.128.55:5432/src'
 app.config['SECRET_KEY'] ="thisismysecretkey"
@@ -88,15 +89,13 @@ class Person(db.Model, UserMixin):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.String())
     email= db.Column(db.String())
-    
-    # category= db.Column(db.String())
     unique_code = db.Column(db.String(12)) 
     code= db.Column(db.String())
-    phone= db.Column(db.String()    )
+    phone= db.Column(db.String())
     image_file = db.Column(db.String())
     password = db.Column(db.String())
     confirm_password = db.Column(db.String(128))
-    
+    role =db.Column(db.String())
     def __repr__(self):
         return f"Person('{self.id}', {self.name}')"
 
@@ -160,8 +159,17 @@ class StudentData(db.Model):
     
     
 class User(db.Model,UserMixin):
+    clientid = db.Column(db.String())
+    # clientname = db.Column(db.String())
+    staff_id = db.Column(db.String())
     id= db.Column(db.Integer, primary_key=True)
     fullname= db.Column(db.String())
+    dependant_1= db.Column(db.String())
+    dependant_2= db.Column(db.String())
+    dependant_3= db.Column(db.String())
+    dependant_4= db.Column(db.String())
+    dependant_5= db.Column(db.String())
+    medial_amount= db.Column(db.String())
     position= db.Column(db.String())
     email= db.Column(db.String())
     unique_code = db.Column(db.String(12)) 
@@ -170,8 +178,11 @@ class User(db.Model,UserMixin):
     reason = db.Column(db.String())
     campus= db.Column(db.String())
     image_file = db.Column(db.String(255))
+    role =db.Column(db.String())
     def __repr__(self):
         return f"User('{self.id}', {self.fullname}, {self.campus}'"
+    
+    
     
 class Challenge(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
@@ -226,7 +237,11 @@ class Createclient(db.Model,UserMixin):
       
 class Cisl(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
+    clientid = db.Column(db.String())
+    clientname = db.Column(db.String())
     name= db.Column(db.String())
+    status= db.Column(db.String())
+    role =db.Column(db.String())
     date = db.Column(db.Date)  
     time= db.Column(db.String()     )
     incident = db.Column(db.String() )  # Add start_date field
@@ -245,13 +260,20 @@ class Cisl(db.Model,UserMixin):
     
 class Hospital(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
+    clientid= db.Column(db.String())
+    clientname= db.Column(db.String())
+    staffname= db.Column(db.String())
+    staffunique_code= db.Column(db.String())
+    userid= db.Column(db.String())
     idcard= db.Column(db.String())
-    name = db.Column(db.String)  
-    patient_name= db.Column(db.String()     )
+    name = db.Column(db.String())
+    patient_name= db.Column(db.String())
     facility = db.Column(db.String() )  # Add start_date field
     location = db.Column(db.String())
     expense = db.Column(db.String())
     amount = db.Column(db.String())
+    # staff_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # staff = db.relationship('User', backref=db.backref('hospitals', lazy=True))
     def __repr__(self):
         return f"User('{self.id}', {self.name}, {self.patient_name}'"
     
@@ -374,23 +396,7 @@ class Work(db.Model):
     date_completed = db.Column(db.Date, nullable=False)
     
     
-def calculate_weekly_work():
-    today = datetime.now().date()
-    week_start = today - timedelta(days=today.weekday())  # Get the start of the current week
-    week_end = week_start + timedelta(days=6)  # Get the end of the current week
 
-    # Query the database to get items created within the current week
-    items_created = Item.query.filter(Item.start_date >= week_start, Item.start_date <= week_end).all()
-
-    total_work = sum(int(item.quantity) for item in items_created)
-    return total_work
-
-def calculate_workload_percentage(total_work, workload_limit):
-    if workload_limit <= 0:
-        return 0
-    else:
-        return min(100, (total_work / workload_limit) * 100)
-    
 # @app.route('/weekly-work', methods=['GET'])
 # def get_weekly_work():
 #     weekly_work = calculate_weekly_work()
@@ -792,9 +798,9 @@ def add_course():
 
 
 
-@app.route('/level100', methods=['GET', 'POST'])
-def level100():
-    sendtelegram("New User on Pasco Portal level 100")
+@app.route('/searchcode', methods=['GET', 'POST'])
+def searchcode():
+    # sendtelegram("New User on Pasco Portal level 100")
     hundred = Course.query.filter_by(level='100').all()
     return render_template('level100.html', hundred=hundred)
 
@@ -1090,28 +1096,110 @@ def medicals():
 
 
 
+@app.route('/staffmedicals/<int:userid>', methods=['GET', 'POST'])
+def staffmedicals(userid):
+    users = Hospital.query.filter_by(id=userid).first() 
+    return render_template("staffmedicals.html",users=users)
 
-@app.route('/hospital', methods=['POST','GET'])
-def hospital():
+
+@app.route('/addstaff', methods=['GET', 'POST'])
+def addstaff():
+    form=Adduser()
+    if form.validate_on_submit():
+        unique_code = secrets.token_hex(6)  
+        medial_amount = 1000
+        if len(str(form.code.data)) != 8:
+                flash('Unique Code must be exactly 8 digits.', 'danger')
+                return redirect(url_for('addstaff'))
+        else:
+            new=User(clientid = current_user.id,
+                fullname=form.fullname.data,      
+                   position=form.position.data,
+                   dependant_1=form.dependant_1.data,
+                   dependant_2=form.dependant_2.data,
+                   dependant_3=form.dependant_3.data,
+                   dependant_4=form.dependant_4.data,
+                   dependant_5=form.dependant_5.data,
+                   email=form.email.data,
+                   reason=form.reason.data,
+                   unique_code=unique_code,
+                   code=form.code.data,
+                  medial_amount=medial_amount,
+                   campus=form.campus.data,
+                   qualities=form.qualities.data,
+               image_file=form.image_file.data
+                  )
+            db.session.add(new)
+            db.session.commit()
+            send_email()
+            flash("Welcome to CISL, " + " " + new.qualities + ". " + " Kindly Check your email for you ID Number","success")
+            return redirect('/')
+    print(form.errors)
+    return render_template("addAlumni.html", form=form)
+
+
+@app.route('/auth', methods=['POST','GET'])
+def auth():
+    if current_user.role =='admin':
+        users=User.query.order_by(User.id.desc()).all()
+        print(users)
+    else:
+        users=User.query.filter_by(clientid=str(current_user.id)).order_by(User.id.desc()).all()
+    return render_template("auth.html",users=users)
+
+@app.route('/staffid/<int:userid>', methods=['GET', 'POST'])
+def staffid(userid):
+    users = User.query.filter_by(id=userid).first() 
+    return render_template("staffid.html",users=users)
+
+
+
+
+@app.route('/searchstaff', methods=[ 'POST'])
+def searchstaff():
+    form= Search()
+    if request.method == 'POST': 
+        posts =User.query
+        if form.validate_on_submit():
+            postsearched=form.searched.data
+            posts =posts.filter(User.unique_code.like('%'+ postsearched + '%') )
+            posts =posts.order_by(User.qualities).all()
+            # posts =posts.order_by(User.position).all() 
+            flash("You searched for "+ postsearched, "success")  
+            print(posts)   
+    return render_template("searchstaff.html", form=form, searched =postsearched, posts=posts)
+
+
+
+@app.route('/hospital/<int:userid>', methods=['POST','GET'])
+def hospital(userid):
+    
     form = HospitalForm()
+    staff = User.query.filter_by(id=userid).first() 
     if form.validate_on_submit():
         hospital= Hospital(
+                userid=userid,
+                clientid=staff.clientid,
+                staffname=staff.qualities,
+                staffunique_code=staff.unique_code,
                 idcard=form.idcard.data,        
                 name=form.name.data,        
-                   patient_name=form.patient_name.data,
-                   facility=form.facility.data,
-                   location=form.location.data,
-                   expense=form.expense.data,
-               amount=form.amount.data,
-               )
+                patient_name=form.patient_name.data,
+                facility=form.facility.data,
+                location=form.location.data,
+                expense=form.expense.data,
+                amount=form.amount.data)
         print(hospital)
         db.session.add(hospital)
         db.session.commit()
         print(hospital)
         flash("Medical Scheme Utilisation Sent, We will reach out to you soon.", "success")
-        return redirect('/')
+        return redirect('/')    
+    elif not staff:
+        flash("Inactive User")
+        return redirect(url_for('addstaff'))
     print(form.errors) 
-    return render_template('hospital.html', form=form)
+    return render_template('hospital.html', form=form, users={'id': userid})
 
 
 
@@ -1123,8 +1211,7 @@ def client():
                    email=form.email.data,
                    phone=form.phone.data,
                    gender=form.gender.data,
-                   code=form.code.data,
-                   
+                   code=form.code.data, 
                image_file=form.image_file.data
                   )
             db.session.add(new)
@@ -1135,6 +1222,8 @@ def client():
             return redirect('auth')
     print(form.errors)
     return render_template("client.html", form=form, title='addalumni')
+
+
 
 static_timestamp = datetime.now() 
 
@@ -1418,19 +1507,11 @@ def claims():
 
 @app.route('/verify_code', methods=['GET', 'POST'])
 def verify_code():  
-    # if request.method == 'POST':
-    #     unique_code = request.form.get('unique_code')
-    #     code = request.form.get('code')
-    #     user = User.query.filter_by(unique_code=unique_code).first()
-    #     if user and user.code:
-    #         session['user_id'] = user.id 
-    #         return redirect(url_for('makeclaim'))
-    #     else:
-    #         flash('Invalid unique code. Please try again.', 'danger')
     if request.method == 'POST':
         unique_code = request.form.get('unique_code').strip()
         code = request.form.get('code').strip()
         user = User.query.filter_by(unique_code=unique_code).first()
+        
         if user and user.code == code:
             session['user_id'] = user.id
             return redirect(url_for('makeclaim'))
@@ -1439,18 +1520,49 @@ def verify_code():
     return render_template('verify_code.html')
 
 
+
+
+@app.route('/update_claim_status/<int:id>/<string:status>', methods=['POST', 'GET'])
+def update_claim_status(id,status):
+    print("Update_claim_status")
+    print("id:",id)
+    print("status:",status)
+    try:
+        cisl= Cisl.query.get_or_404(id)
+        print("cisl:",cisl)
+        cisl.status=status
+        db.session.commit()
+        print("cisl.status:",cisl.status)
+    except Exception as e:
+        print(e)
+        print("status:",cisl.status)
+        flash ("Status Successfully Changed")
+    return redirect (url_for('main'))
+
+
+
+
+        
+    
+    
+
+
+
+
+
 @app.route('/makeclaim', methods=['POST','GET'])
 def makeclaim():
     user_id = session.get('user_id')
     if user_id is None:
         flash('Please verify your code first.', 'danger')
         return redirect(url_for('verify_code'))
-
-    
-     
+    user = User.query.get_or_404(user_id)
     form = CislForm()
     if form.validate_on_submit():
         cisl= Cisl(
+            clientid=user.id,
+            clientname=user.qualities,
+                status=form.status.data,        
                 name=form.name.data,        
                    date=form.date.data,
                    time=form.time.data,
@@ -1587,14 +1699,12 @@ def person():
     current_time = datetime.now()
     # all_product= User.query.count()
     # outstock = db.session.query(Item.quantity).filter(Item.quantity < 5).all()
-    outstock = db.session.query(Item).filter(Item.quantity < 5).count()
+    # outstock = db.session.query(Item).filter(Item.quantity < 5).count()
     
     users = Budget.query.order_by(Budget.id.desc()).all()
     total_budget = sum(int(user.budget) for user in users)  # Convert budget to int before summation
     
-    weekly_work = calculate_weekly_work()
-    workload_limit = 1000  # Assuming a predefined workload limit of 1000 units
-    workload_percentage = calculate_workload_percentage(weekly_work, workload_limit)  
+  
     # outstock = db.session.query(Item).filter(Item.quantity < 5).count()
     total_students = User.query.count()
     instock = Item.query.count()
@@ -1625,8 +1735,8 @@ def person():
     if current_user == None:
         flash("Welcome to the Dashboard" + current_user.email, "Success")
         flash(f"There was a problem")
-    return render_template('person.html',outstock=outstock, instock=instock, title='dashboard',user=user, form=form,
-          total_budget=total_budget,   workload_percentage=workload_percentage,        current_time=current_time, total_cat=total_cat,  total_stock=total_stock, greeting=greeting, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
+    return render_template('person.html', instock=instock, title='dashboard',user=user, form=form,
+          total_budget=total_budget,         current_time=current_time, total_cat=total_cat,  total_stock=total_stock, greeting=greeting, total_challenges=total_challenges,total_message=total_message,online=online,message=message,total_Faq=total_Faq, total_leaders=total_leaders,total_people_with_positions=total_people_with_positions, users=users, total_students=total_students,users_with_positions=users_with_positions, total_getfundstudents=total_getfundstudents,challenges=challenges)
 
        
 @app.route('/personid', methods=['GET', 'POST'])
@@ -1679,11 +1789,10 @@ def adminadd():
     return render_template("adminadd.html", form=form, title='addalumni')
 
 
-@app.route('/auth', methods=['POST','GET'])
-def auth():
-    
-    users=User.query.order_by(User.id.desc()).all()
-    return render_template("auth.html",users=users)
+
+
+
+
 
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
@@ -1715,7 +1824,7 @@ def main():
    
     current_time = datetime.now()
    
-    users=Cisl.query.order_by(Cisl.id.desc()).all()
+
    
    
     message = Message.query.count()
@@ -1724,8 +1833,12 @@ def main():
     
     total_claims=Cisl.query.count()
     
-    print(users)
     
+    if current_user.role == 'admin':
+        users = Cisl.query.order_by(Cisl.id.desc()).all()
+        print(users)
+    else:
+        users=Cisl.query.filter_by(clientid=str(current_user.id)).order_by(Cisl.id.desc()).all()
 
 
     print(current_user)
@@ -1735,6 +1848,39 @@ def main():
         flash(f"There was a problem")
     return render_template('current.html',unique_code=unique_code, instock=instock, title='dashboard',form=form,total_claims=total_claims,
             current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
+
+@app.route('/adminlogin/<int:userid>', methods=['GET', 'POST'])
+def adminlogin(userid):
+    user = Person.query.get_or_404(userid)
+    login_user(user)
+    return redirect(url_for("main"))
+    
+
+
+@app.route('/allclients', methods=['GET', 'POST'])
+@login_required
+def allclients():
+    if current_user.role == 'admin':
+        users = Person.query.filter_by(role="client").order_by(Person.id.desc()).all()
+        # staff = User.query.order_by(User.id.desc()).all()
+        print(users)
+    else:
+        # flash("youre not allowed to see this")
+        return redirect (url_for("main"))
+    return render_template('allclient.html',users=users)
+
+
+@app.route('/allstaff', methods=['GET', 'POST'])
+@login_required
+def allstaff():
+    if current_user.role == 'admin':
+        users = User.query.order_by(User.id.desc()).all()
+        # staff = User.query.order_by(User.id.desc()).all()
+        print(users)
+    else:
+        flash("youre not allowed to see this")
+        return redirect ('main')
+    return render_template('allstaff.html',users=users)
 
 
 
@@ -1757,11 +1903,25 @@ def homelook():
         return redirect('homelook')
     
     print(form.errors)
-    total_claims=Cisl.query.count()
+    if current_user.role == 'admin':
+        total_claims=Cisl.query.count()
+    else:
+        total_claims=Cisl.query.filter_by(clientid=str(current_user.id)).count()
     
-    total_client=User.query.count()
     
-    total_medicals=Hospital.query.count()
+    if current_user.role == 'admin':
+        total_client=User.query.count()
+    else:
+        total_client=User.query.filter_by(clientid=str(current_user.id)).count()
+    
+
+    #Hospital Module
+    if current_user.role == 'admin':
+        total_medicals=Hospital.query.count()
+    else:
+        total_medicals=Hospital.query.filter_by(clientid=str(current_user.id)).count()
+    
+    
     
     medical_client=Groups.query.count()
     medical_staff=Item.query.count()
@@ -2095,20 +2255,21 @@ def base():
     return dict(form=form)
 
 
-@app.route('/search', methods=[ 'POST'])
-def search():
-    form= Search()
-    if request.method == 'POST': 
-        posts =Course.query
-        if form.validate_on_submit():
-            postsearched=form.searched.data
-            posts =posts.filter(Course.name.like('%'+ postsearched + '%') )
-            posts =posts.order_by(Course.schools).all()
+
+# @app.route('/search', methods=[ 'POST'])
+# def search():
+#     form= Search()
+#     if request.method == 'POST': 
+#         posts =Course.query
+#         if form.validate_on_submit():
+#             postsearched=form.searched.data
+#             posts =posts.filter(Course.name.like('%'+ postsearched + '%') )
+#             posts =posts.order_by(Course.schools).all()
              
-            # posts =posts.order_by(User.position).all() 
-            flash("You searched for "+ postsearched, "success")  
-            print(posts)   
-    return render_template("search.html", form=form, searched =postsearched, posts=posts)
+#             # posts =posts.order_by(User.position).all() 
+#             flash("You searched for "+ postsearched, "success")  
+#             print(posts)   
+#     return render_template("search.html", form=form, searched =postsearched, posts=posts)
 
 
 @app.route('/list/<int:userid>', methods=['GET', 'POST'])
@@ -2356,36 +2517,6 @@ def show():
     
 
 
-
-@app.route('/addclient', methods=['GET', 'POST'])
-def addclient():
-    form=Adduser()
-    if form.validate_on_submit():
-        unique_code = secrets.token_hex(6)
-        
-        if len(str(form.code.data)) != 8:
-                flash('Unique Code must be exactly 8 digits.', 'danger')
-                return redirect(url_for('addclient'))
-        else:   
-            new=User(fullname=form.fullname.data,        
-                   position=form.position.data,
-                   email=form.email.data,
-                   reason=form.reason.data,
-                   unique_code=unique_code,
-                   code=form.code.data,
-                   campus=form.campus.data,
-                   qualities=form.qualities.data,
-               image_file=form.image_file.data
-                  )
-            db.session.add(new)
-            db.session.commit()
-            
-            send_email()
-            flash("Welcome to CISL, " + " " + new.qualities + ". " + " Kindly Check your email for you ID Number","success")
-            return redirect('/')
-   
-    print(form.errors)
-    return render_template("addAlumni.html", form=form)
 
 
 @app.route('/signup', methods=['POST','GET'])

@@ -1,0 +1,124 @@
+{% extends 'landingpage.html' %}
+
+{% block body %}
+
+
+
+    
+
+
+<div class="container-fluid" >
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
+        </div>
+        
+        
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <br>
+
+  
+
+
+
+       
+
+    <div class="container-fluid">
+
+         
+       
+       <form class="form-control d-flex mb-10" role="search" method='POST' action='{{url_for('searchstaff')}}' >
+        {{form.hidden_tag()}}
+      
+        <input class="form-control" type="search" name='searched' placeholder="Search for Staff Unique Code" >
+        <button class="btn btn-primary p-4" type="submit" > Search</button>
+          
+      </form>
+
+
+
+
+      
+
+
+       
+        <div class="row g-6 mb-6">
+          
+            
+    
+          <div class="card shadow border-0 mb-7 ">
+            <div class="card-header d-flex " style="justify-content:space-between;">
+                <h5 class="mb-0"> You Searched for:      {{ searched }}</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Staff Name</th>
+                            <th scope="col">Staff ID</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Balance Left </th>
+                            
+                           
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {%if posts|length < 1 %}
+                        <h4 class="text-muted">No result for the {{searched}}</h4>
+                        {%else %}
+                        <div class="row">
+                        {% for post in posts %}
+                       
+                            <td>{{ post.qualities }}</td>
+                            <td>{{ post.unique_code }}</td>
+                            <td>{{ post.reason }}</td>
+                            <td>{{ post.campus }}</td>
+                            <td>{{ post.email }}</td>
+                            <td>Ghc {{ post.medial_amount }}</td>
+                            <td>
+                              <a href="{{ url_for('staffid', userid=post.id) }}" style="text-decoration: none; color: #992621;"> 
+                              <span class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                <i class="bi bi-box-arrow-right"></i>
+                          </span></a>
+                          </td>
+                           
+                                  
+                               
+                            
+                            {% endfor %} 
+                            </div> 
+                          {%endif%}
+                        
+                       
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm">Showing a search result</span>
+            </div>
+        </div>
+      
+     
+    </div>
+    
+    
+       <!-- <div class="card-footer border-0 py-5">
+            <span class="text-muted text-sm" style="margin-left:500px; margin:">Powered by PrestoGhana</span>
+        </div>
+-->
+
+  
+    </div>
+</div>
+
+
+{%endblock body%}

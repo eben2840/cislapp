@@ -7,7 +7,7 @@
     <article>
 
      
-      <form action="{{ url_for('addclient') }}" method="post" enctype="multipart/form-data" >
+      <form action="{{ url_for('addstaff') }}" method="post" enctype="multipart/form-data" >
         {{form.hidden_tag()}}
      
         
@@ -49,16 +49,21 @@
                
                 {{form.reason(  type="number", placeholder="Add a mobile number",class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput",)}}
 
+                <input name="email" type="email" placeholder="Email" class="input-field my-3 my-lg-3 mt-2 space", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);",id="email">  
 
               
 
                 {{form.campus(class="input-field my-3 my-lg-3 mt-2 space",style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+                {{form.dependant_1(class="input-field my-3 my-lg-3 mt-2 space",placeholder="Enter dependant 1",style="padding:15px;   border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+                {{form.dependant_2(class="input-field my-3 my-lg-3 mt-2 space",placeholder="Enter dependant 2", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+                {{form.dependant_3(class="input-field my-3 my-lg-3 mt-2 space",placeholder="Enter dependant 3", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+                {{form.dependant_4(class="input-field my-3 my-lg-3 mt-2 space",placeholder="Enter dependant 4", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
+                {{form.dependant_5(class="input-field my-3 my-lg-3 mt-2 space",placeholder="Enter dependant 5", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);"  ,id="floatingInput")}}
            
               
              
               
 
-                <input name="email" type="email" placeholder="Email" class="input-field my-3 my-lg-3 mt-2 space", style="padding:15px;  border:1px solid #2E2D7F;   border-radius:15px; width:100%;box-shadow: var(--shadow-1);",id="email">  
              
                 <span class="input-group-text mt-2 ">I Agree</span>
 

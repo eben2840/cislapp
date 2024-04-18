@@ -100,53 +100,121 @@
                 <ul class="navbar-nav active">
                     <div class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide" href="#">
                         Admin
-                        <!--<span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4">0</span>
-                    -->
-                            </div>
-                            <hr>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="/homelook">
-                            <i class="bi bi-house"></i> Home
-                        </a>
-                    </li>
-                    <hr class="navbar-divider my-5 opacity-20 ">
+                      </div>
+                      <hr>
 
+                    {% if current_user.role =='admin'%}
                     <li class="nav-item ">
-                      <a class="nav-link" href="/main">
-                          <i class="bi bi-envelope-check"></i> All Claims
+                      <a class="nav-link" href="/homelook">
+                          <i class="bi bi-house"></i> Dashboard
+                      </a>
+                  </li><hr>
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/allclients">
+                          <i class="bi bi-house"></i> All Clients
                       </a>
                   </li>
-                  <hr class="navbar-divider my-5 opacity-20 ">
 
-                  <li class="nav-item ">
-                    <a class="nav-link" href="/medicals">
-                        <i class="bi bi-envelope-check"></i> Medical Administration 
-                    </a>
-                </li>
+
+                 
                 <hr class="navbar-divider my-5 opacity-20 ">
 
                 <li class="nav-item ">
-                  <a class="nav-link" href="/auth">
-                      <i class="bi bi-envelope-check"></i> Claims Clients
+                  <a class="nav-link" href="/main">
+                      <i class="bi bi-envelope-check"></i> All Claims
+                  </a>
+              </li>
+              <hr class="navbar-divider my-5 opacity-20 ">
+
+              <li class="nav-item ">
+                <a class="nav-link" href="/medicals">
+                    <i class="bi bi-envelope-check"></i> Medical Administration 
+                </a>
+            </li>
+            <hr class="navbar-divider my-5 opacity-20 ">
+
+            <li class="nav-item ">
+              <a class="nav-link" href="/auth">
+                  <i class="bi bi-envelope-check"></i> All Staff
+              </a>
+          </li>
+
+          <hr class="navbar-divider my-5 opacity-20 ">
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/searchcode">
+                <i class="bi bi-envelope-check"></i>Search
+            </a>
+        </li>
+         
+                <hr class="navbar-divider my-5 opacity-20 ">
+                <li class="nav-item">
+                    <a class="nav-link" href="/person">
+                        <i class="bi bi-gear"></i> Settings
+                    </a>
+                </li>
+                  {% elif current_user.role =='hospital' %}
+
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/homelook">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <hr class="navbar-divider my-5 opacity-20 ">
+                 
+               
+
+                <li class="nav-item ">
+                  <a class="nav-link" href="/searchcode">
+                      <i class="bi bi-envelope-check"></i>Search
                   </a>
               </li>
              
                     <hr class="navbar-divider my-5 opacity-20 ">
-                    
-
-
-                    
-                   
-
-                    
-                    
                     <li class="nav-item">
                         <a class="nav-link" href="/person">
                             <i class="bi bi-gear"></i> Settings
                         </a>
                     </li>
-                    
-                   
+
+                    {% else %}
+
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/homelook">
+                          <i class="bi bi-house"></i> Dashboard
+                      </a>
+                  </li>
+                  <hr class="navbar-divider my-5 opacity-20 ">
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/main">
+                        <i class="bi bi-envelope-check"></i> All Claims
+                    </a>
+                </li>
+                <hr class="navbar-divider my-5 opacity-20 ">
+
+               
+              <li class="nav-item ">
+                <a class="nav-link" href="/auth">
+                    <i class="bi bi-envelope-check"></i>All Staff
+                </a>
+            </li>
+
+            <hr class="navbar-divider my-5 opacity-20 ">
+
+              <li class="nav-item ">
+                <a class="nav-link" href="/searchcode">
+                    <i class="bi bi-envelope-check"></i>Search
+                </a>
+            </li>
+           
+                  <hr class="navbar-divider my-5 opacity-20 ">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/person">
+                          <i class="bi bi-gear"></i> Settings
+                      </a>
+                  </li>
+{%endif%}
                 </ul>
                 <!-- Divider -->
                 <hr class="navbar-divider my-5 opacity-20 ">

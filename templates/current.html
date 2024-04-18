@@ -47,20 +47,35 @@
                 <table class="table table-hover table-nowrap">
                     <thead class="thead-light">
                         <tr>
+                           <!-- <th scope="col">Client ID</th>-->
                             <th scope="col">Client Name</th>
+                            <th scope="col">Staff Name</th>
                             <th scope="col">DOI</th>
                             <th scope="col">TOI</th>
-                            <th scope="col">Contact Person</th>
+                    
+                            <th scope="col">Status</th>
                             <th scope="col">Type of Incident</th>
                             <th scope="col">Contact Number</th>
                             <th scope="col">Cost</th>
-                           
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {%for users in users%} 
                         <tr>
+                          <!-- 
+                            <td>
+                                
+                                <a class="text-heading font-semibold" href="#">
+                                    {{users.clientid}}
+                                </a>
+                            </td>-->
+                            <td>
+                                
+                                <a class="text-heading font-semibold" href="#">
+                                    {{users.clientname}}
+                                </a>
+                            </td>
                             <td>
                                 
                                 <a class="text-heading font-semibold" href="#">
@@ -80,16 +95,27 @@
                             <td>
                                 {{users.time}}
                             </td>
+                           
+
+                            
+                            
                             <td>
+                                {% if users.status == 'pending'%}
+                                <span class="badge badge-pill bg-soft-warning text-dark me-2">
+                                    {% elif users.status == 'in-progress'%}
+                                    <span class="badge badge-pill bg-soft-primary text-dark me-2">
+                                    {% elif users.status == 'completed'%}
+                                    <span class="badge badge-pill bg-soft-success text-dark me-2">
+                                        {% elif users.status == 'denied'%}
+                                        <span class="badge badge-pill bg-soft-danger text-dark me-2">
+                                      
+                                        {%endif%}
+                                     
+                                   {{ users.status}}
                               
-                                   {{ users.name_of_contact}}
-                         
-                                
                             </td>
-                            <td>
-                                <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                                    <i class="bi bi-arrow-up me-1"></i>{{ users.incident}}
-                                </span>
+                                <td>
+                                   {{ users.incident}}
                                 
                             </td>
 
@@ -104,19 +130,33 @@
     
                             <td>
                                 <span class="badge badge-lg badge-dot">
-                                    <i class="bi bi-arrow-up me-1"></i>{{users.cost}}
+                                 {{users.cost}}
                                 </span>
                             </td>
                            
                             
-                           
+                            {% if current_user.role =='admin'%}
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li><a  class="dropdown-item" href="{{url_for('update_claim_status', id=users.id, status='pending')}}">Pending</a></li>
+                                      <li><a class="dropdown-item" href="{{url_for('update_claim_status', id=users.id, status='in-progress')}}">In-progress</a></li>
+                                      <li><a class="dropdown-item" href="{{url_for('update_claim_status', id=users.id, status='completed')}}">Completed</a></li>
+                                      <li><a class="dropdown-item" href="{{url_for('update_claim_status', id=users.id, status='denied')}}">Denied</a></li>
+                                    </ul>
+                                  </div>
+                            </td>
+                            {% else %}
     
                             <td class="text-end">
-                                <!--<a href="#" class="btn btn-sm btn-neutral">Update</a>-->
                                 <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
                                     <i class="bi bi-box-arrow-right"></i>
                                 </button>
                             </td>
+                            {% endif %}
                         </tr>
     
                         {%endfor%}

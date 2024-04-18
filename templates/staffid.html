@@ -138,6 +138,14 @@
                   <i class="bi bi-envelope-check"></i> All Staff
               </a>
           </li>
+
+          <hr class="navbar-divider my-5 opacity-20 ">
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/searchcode">
+                <i class="bi bi-envelope-check"></i>Search
+            </a>
+        </li>
          
                 <hr class="navbar-divider my-5 opacity-20 ">
                 <li class="nav-item">
@@ -173,12 +181,14 @@
                       <i class="bi bi-envelope-check"></i>All Staff
                   </a>
               </li>
-			  <hr class="navbar-divider my-5 opacity-20 ">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/person">
-                            <i class="bi bi-gear"></i> Search 
-                        </a>
-                    </li>
+
+              <hr class="navbar-divider my-5 opacity-20 ">
+
+                <li class="nav-item ">
+                  <a class="nav-link" href="/searchstaff">
+                      <i class="bi bi-envelope-check"></i>Search
+                  </a>
+              </li>
              
                     <hr class="navbar-divider my-5 opacity-20 ">
                     <li class="nav-item">
@@ -186,7 +196,6 @@
                             <i class="bi bi-gear"></i> Settings
                         </a>
                     </li>
-					
 {%endif%}
                 </ul>
                 <!-- Divider -->
@@ -415,155 +424,108 @@
         <main class="py-6 bg-surface-secondary">
          
           
-            <div class="container bg-white">
-	
-			<form action="#" method="post" id="myform">
-				
-				
-				{{ form.hidden_tag() }}
+            <div>
 
-		
-
-		
-
-		
-
-        <div id="" class="">
-			<div class="row">
-				<div class="col-lg-8">
-					<div class="form-group ">
-						<label style="color:#000; font-size:20px;"><b>Medical Scheme Utilisation - MANO</b>
-						</label>
-						<p>This form is designed to help you comply with your insurance terms and conditions, including your duty to notify insurers of incidents likely to result in a claim.</p>
-
-					</div>
-					
-				</div>
-			</div>
-			<hr>
-			<div class="row mt-10">
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Enter ID  <span class="text-danger">*</span></label>
-							
-						<input name="idcard" type="number" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; "placeholder="Enter your ID card number">
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Employee Name
-							 <span class="text-danger">*</span></label>
-							<p> {{ form.name ( class="input-field", id="floatingInput", style="width:100%; padding:20px; border:1px solid #2E2D7F; ", required="required", placeholder="Enter your Name")  }}</p> 
-
-					</div>
-				</div>
-				
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Patient Name
-
-							
-						<span class="text-danger">*</span></label>
-						{{form.patient_name(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="Enter the name of the person who visited the medical facility", id="floatingInput", required="required")}}
-						
-					</div>
-				</div>
-				
-			   
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Medical Facility Visited
-							
-							
-					 <span class="text-danger">*</span></label>
-						
-						<input name="facility" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " placeholder="Enter the name of the facility you visited">
-					</div>
-				</div>
-
-
-				
-
-		   
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Location of Facility
-
-							
-					 <span class="text-danger">*</span></label>
-						{{form.location(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="Where is the nearest location of the facility", id="floatingInput", required="required")}}
-
-					</div>
-				</div>
-
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Expense Type
-
-							
-						<span class="text-danger">*</span></label>
-						{{form.expense(class="input-field " ,style="width:100%; padding:20px; border:1px solid #2E2D7F; ",  placeholder="", id="floatingInput", required="required")}}
-
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-12">
-					<div class="form-group">
-						<label>Amount Spent
-							
-							
-						<span class="text-danger">*</span></label>
-						<input name="amount" class="input-field " style="width:100%; padding:20px; border:1px solid #2E2D7F; " type="number" placeholder="Enter the amount you spent at the facility when you visited.">
-					</div>
-				</div>
-
-				
-				
-
-				
-
-				
-			</div>
-		
-
-
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-12">
-					<div class="form-group"><br>
-						<label>NB<br>
-
-							All the information provided is corrected
-						</label>
-						</div>
-				
-					
-				</div>
-
-			
-				<div class="col-lg-12 col-md-12 col-12">
-					
-						<div class="form-group">
-							<div class="button"><br>
-								<button type="submit" class="btn btn-primary" style="width:100%; margin:auto;">Send Claim</button>
-							</div>
-						
-					</div>
-				</div>
-			</div>
+<div class="container-fluid">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
         </div>
+        
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-	</div>
+    <div class="card">
+      <div class="card-body">
+        Balance Left: {{medial_amount}} 
+        <div class="d-flex justify-content-center">
+          <img src={{users.image_file}} style="width:200px;">
+         
+        </div>
+        
+        <div class="text-center my-6">
+          <!-- Title -->
+          <a href="#" class="d-block h5 mb-0"> {{users.qualities}}</a>
+          <!-- Subtitle -->
+          <span class="d-block text-sm text-muted">{{users.email}}</span>
+        </div>
+        <!-- Stats -->
+        <a href="{{ url_for('staffmedicals', userid=users.id) }}" style="text-decoration: none; color: #992621;"> 
+          <span class="btn btn-sm btn-rectangle btn-neutral text-danger-hover">
+            Report
+      </span></a>
+      <a href="{{ url_for('hospital', userid=users.id) }}" style="text-decoration: none; color: #992621;"> 
+        <span class="btn btn-sm btn-rectangle btn-neutral text-danger-hover">
+          Forms
+        </a>
+        <hr>
+        
+        <div class="row mb-10">
+          
+          
+          <div class="col-lg-3 col-12 text-center">
+            <a href="#" class="h4 font-bolder mb-0">{{ users.unique_code }}</a>
+            <span class="d-block text-sm">Unique Code</span>
+          </div>
+          
+       
 
-      
-    </form>
+          <div class="col-lg-3 col-12 text-center">
+            <a href="#" class="h4 font-bolder mb-0"> {{users.campus}}</a>
+            <span class="d-block text-sm">Gender</span>
+          </div>
+          
+          <div class="col-lg-3 col-12 text-center">
+            <a href="#" class="h4 font-bolder mb-0">{{ users.reason }}  </a>
+            <span class="d-block text-sm">Mobile Number</span>
+          </div>
 
+          <div class="col-lg-3 col-12 text-center">
+            <a href="#" class="h4 font-bolder mb-0"> {{users.fullname}}</a>
+            <span class="d-block text-sm">ID Card</span>
+          </div>
 
-</div>
+        </div>
+<hr>
+        <div class="row">
+         
+        <h6 class="text-muted mb-5 text-center">Dependants Profile:</h6>
+          <div class="col-lg-6  col-12 text-center mt-5">
+            <a href="#" class="h4 font-bolder mb-0">  {{users.dependant_1}}   </a>
+            <span class="d-block text-sm">Dependant Name</span>
+          </div>
 
+          <div class="col-lg-6  col-12 text-center mt-5">
+            <a href="#" class="h4 font-bolder mb-0">  {{users.dependant_2}}   </a>
+            <span class="d-block text-sm">Dependant Name</span>
+          </div>
 
-</div>
-</div>
+          <div class="col-lg-6  col-12 text-center mt-5">
+            <a href="#" class="h4 font-bolder mb-0">  {{users.dependant_3}}   </a>
+            <span class="d-block text-sm">Dependant Name</span>
+          </div>
 
-</div>
+          <div class="col-lg-6 col-12 text-center mt-5">
+            <a href="#" class="h4 font-bolder mb-0">  {{users.dependant_4}}   </a>
+            <span class="d-block text-sm">Dependant Name</span>
+          </div>
+
+          <div class="col-lg-6 col-12 text-center mt-5">
+            <a href="#" class="h4 font-bolder mb-0">  {{users.dependant_5}}   </a>
+            <span class="d-block text-sm">Dependant Name</span>
+          </div>
+
+        </div>
+          
+         
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 
 
@@ -695,7 +657,7 @@ measurementId: "G-9T21K58F10"
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 </script>
-<script src="/static/assets/js/script.js"></script>
+<script src="//static/assets/js/script.js"></script>
 
 <!-- 
 - ionicon link
