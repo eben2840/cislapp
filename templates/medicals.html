@@ -50,6 +50,7 @@
                 <table class="table table-hover table-nowrap">
                     <thead class="thead-light">
                         <tr>
+                            <th scope="col">Company Name</th>
                             <th scope="col">Staff Name</th>
                             <th scope="col">Staff ID</th>
                          
@@ -59,13 +60,16 @@
                             <th scope="col">Expense Type</th>
                             <th scope="col">Amount Spent</th>
                            
-                            <th></th>
+                     
                         </tr>
                     </thead>
                     <tbody>
                         {%for users in users%} 
                         <tr>
-
+                            <td>
+                                {{users.companyname}}
+                            </td>
+                        
                             <td>
                                 {{users.staffname}}
                             </td>
@@ -109,15 +113,17 @@
                             </td>
                            
                             
-                           
+                           {% if current_user.role =='hospital' %}
     
-                            <td>
-                                <a href="{{ url_for('staffmedicals', userid=users.id) }}" >
-                                <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
-                                    <i class="bi bi-box-arrow-right"></i>
-                                </button></a>
-                            </td>
-                        </tr>
+                           {%else%}
+                           <td>
+                            <a href="{{ url_for('staffmedicals', userid=users.id) }}" >
+                            <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button></a>
+                        </td>
+                        {%endif%}
+                    </tr>
     
                         {%endfor%}
                     </tbody>

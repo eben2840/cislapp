@@ -169,6 +169,14 @@
                       <i class="bi bi-envelope-check"></i>Search
                   </a>
               </li>
+              <hr class="navbar-divider my-5 opacity-20 ">
+
+
+              <li class="nav-item ">
+                <a class="nav-link" href="/medicals">
+                    <i class="bi bi-envelope-check"></i> Medical Administration 
+                </a>
+            </li>
              
                     <hr class="navbar-divider my-5 opacity-20 ">
                     <li class="nav-item">
@@ -177,7 +185,7 @@
                         </a>
                     </li>
 
-                    {% else %}
+                    {% elif current_user.role == 'claim' %}
 
                     <li class="nav-item ">
                       <a class="nav-link" href="/homelook">
@@ -191,6 +199,21 @@
                         <i class="bi bi-envelope-check"></i> All Claims
                     </a>
                 </li>
+                
+      
+                  <hr class="navbar-divider my-5 opacity-20 ">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/person">
+                          <i class="bi bi-gear"></i> Settings
+                      </a>
+                  </li>
+                  {% elif current_user.role == 'client' %}
+
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/homelook">
+                          <i class="bi bi-house"></i> Dashboard
+                      </a>
+                  </li>
                 <hr class="navbar-divider my-5 opacity-20 ">
 
                
@@ -199,6 +222,9 @@
                     <i class="bi bi-envelope-check"></i>All Staff
                 </a>
             </li>
+
+        
+           
 
             <hr class="navbar-divider my-5 opacity-20 ">
 
@@ -303,8 +329,8 @@
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
                             <div class="logo mb-5">
-                                <a href="#"><img src="static/cisl/img/web2.png" style="width:50px; margin:auto;" alt="#"></a>
-                              </div>
+                              <a href="#"><img src="/static/cisl/img/web2.png" style="width:50px; margin:auto;" alt="#"></a>
+                            </div>
                            
                             </span>
                             </h6>

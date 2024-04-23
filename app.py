@@ -87,6 +87,7 @@ def sendtelegram(params):
 
 class Person(db.Model, UserMixin):
     id= db.Column(db.Integer, primary_key=True)
+    clientname= db.Column(db.String())
     name= db.Column(db.String())
     email= db.Column(db.String())
     unique_code = db.Column(db.String(12)) 
@@ -160,10 +161,11 @@ class StudentData(db.Model):
     
 class User(db.Model,UserMixin):
     clientid = db.Column(db.String())
-    # clientname = db.Column(db.String())
+    clientname = db.Column(db.String())
     staff_id = db.Column(db.String())
     id= db.Column(db.Integer, primary_key=True)
     fullname= db.Column(db.String())
+    company= db.Column(db.String())
     dependant_1= db.Column(db.String())
     dependant_2= db.Column(db.String())
     dependant_3= db.Column(db.String())
@@ -260,6 +262,7 @@ class Cisl(db.Model,UserMixin):
     
 class Hospital(db.Model,UserMixin):
     id= db.Column(db.Integer, primary_key=True)
+    companyname = db.Column(db.String())
     clientid= db.Column(db.String())
     clientname= db.Column(db.String())
     staffname= db.Column(db.String())
@@ -1036,13 +1039,63 @@ def addcommittee():
 
 
 
+@app.route('/main', methods=['GET', 'POST'])
+@login_required
+def main():
+    unique_code = current_user.unique_code
+    current_hour = datetime.now().hour
+    greeting = ""
+    
+    if current_hour < 12:
+        greeting = "Good morning"
+    elif current_hour < 17:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+        
+    form=WaitForm()
+    if form.validate_on_submit():
+        wait=Waitlist(
+            email=form.email.data
+            )
+        db.session.add(wait)
+        db.session.commit()
+        send_email()
+        print(form.email.data)
+       
+        flash("Invitation Sent to" + ' ' + wait.email)
+        return redirect('main')
+    print(form.errors)
+   
+    current_time = datetime.now()
+
+    message = Message.query.count()
+
+    total_claims=Cisl.query.count()
+
+    if current_user.role == 'admin':
+        users = Cisl.query.order_by(Cisl.id.desc()).all()
+        print(users)
+    else:
+        users=Cisl.query.filter_by(clientid=str(current_user.name)).order_by(Cisl.id.desc()).all()
+        # users=Cisl.query.filter_by(id=current_user.id).order_by(Cisl.id.desc()).all()
+
+    print(current_user)
+ 
+    if current_user == None:
+        flash("Welcome to the Dashboard" + current_user.email, "Success")
+        flash(f"There was a problem")
+    return render_template('current.html',unique_code=unique_code, instock=instock, title='dashboard',form=form,total_claims=total_claims,
+            current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
+
+
 
 @app.route('/cisl', methods=['POST','GET'])
 def cisl():
-    
     form = CislForm()
     if form.validate_on_submit():
         cisl= Cisl(
+            clientid=current_user.name,
                 name=form.name.data,        
                    date=form.date.data,
                    time=form.time.data,
@@ -1090,6 +1143,7 @@ def cisl():
 
 
 @app.route('/medicals', methods=['GET', 'POST'])
+@login_required
 def medicals():
     users=Hospital.query.order_by(Hospital.id.desc()).all()
     return render_template("medicals.html",users=users)
@@ -1097,12 +1151,15 @@ def medicals():
 
 
 @app.route('/staffmedicals/<int:userid>', methods=['GET', 'POST'])
+@login_required
 def staffmedicals(userid):
+    # users=Hospital.query.get_or_404(userid)
     users = Hospital.query.filter_by(id=userid).first() 
     return render_template("staffmedicals.html",users=users)
 
 
 @app.route('/addstaff', methods=['GET', 'POST'])
+@login_required
 def addstaff():
     form=Adduser()
     if form.validate_on_submit():
@@ -1112,7 +1169,8 @@ def addstaff():
                 flash('Unique Code must be exactly 8 digits.', 'danger')
                 return redirect(url_for('addstaff'))
         else:
-            new=User(clientid = current_user.id,
+            new=User(
+                clientname = current_user.id,
                 fullname=form.fullname.data,      
                    position=form.position.data,
                    dependant_1=form.dependant_1.data,
@@ -1139,13 +1197,17 @@ def addstaff():
 
 
 @app.route('/auth', methods=['POST','GET'])
+@login_required
 def auth():
     if current_user.role =='admin':
         users=User.query.order_by(User.id.desc()).all()
         print(users)
     else:
-        users=User.query.filter_by(clientid=str(current_user.id)).order_by(User.id.desc()).all()
+        users=User.query.filter_by(clientname=str(current_user.id)).order_by(User.id.desc()).all()
     return render_template("auth.html",users=users)
+
+
+
 
 @app.route('/staffid/<int:userid>', methods=['GET', 'POST'])
 def staffid(userid):
@@ -1175,10 +1237,12 @@ def searchstaff():
 def hospital(userid):
     
     form = HospitalForm()
+    company = Person.query.filter_by(id=userid).first() 
     staff = User.query.filter_by(id=userid).first() 
     if form.validate_on_submit():
         hospital= Hospital(
                 userid=userid,
+                companyname=company.name,
                 clientid=staff.clientid,
                 staffname=staff.qualities,
                 staffunique_code=staff.unique_code,
@@ -1197,7 +1261,7 @@ def hospital(userid):
         return redirect('/')    
     elif not staff:
         flash("Inactive User")
-        return redirect(url_for('addstaff'))
+        return redirect(url_for('homelook'))
     print(form.errors) 
     return render_template('hospital.html', form=form, users={'id': userid})
 
@@ -1562,7 +1626,7 @@ def makeclaim():
         cisl= Cisl(
             clientid=user.id,
             clientname=user.qualities,
-                status=form.status.data,        
+                # status=user.status,        
                 name=form.name.data,        
                    date=form.date.data,
                    time=form.time.data,
@@ -1607,12 +1671,12 @@ def makeclaim():
     return render_template('makeclaim.html', form=form)
 
 
-@app.route('/index1', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def homme():
         return render_template("index1.html")
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/404', methods=['GET', 'POST'])
 def working():
         users=User.query.order_by(User.id.desc()).all()
         return render_template("404.html",users=users)
@@ -1794,60 +1858,9 @@ def adminadd():
 
 
 
-@app.route('/main', methods=['GET', 'POST'])
-@login_required
-def main():
-    unique_code = current_user.unique_code
-    current_hour = datetime.now().hour
-    greeting = ""
-    
-    if current_hour < 12:
-        greeting = "Good morning"
-    elif current_hour < 17:
-        greeting = "Good afternoon"
-    else:
-        greeting = "Good evening"
-        
-    form=WaitForm()
-    if form.validate_on_submit():
-        wait=Waitlist(
-            email=form.email.data
-            )
-        db.session.add(wait)
-        db.session.commit()
-        send_email()
-        print(form.email.data)
-       
-        flash("Invitation Sent to" + ' ' + wait.email)
-        return redirect('main')
-    print(form.errors)
-   
-    current_time = datetime.now()
-   
-
-   
-   
-    message = Message.query.count()
- 
-    
-    
-    total_claims=Cisl.query.count()
-    
-    
-    if current_user.role == 'admin':
-        users = Cisl.query.order_by(Cisl.id.desc()).all()
-        print(users)
-    else:
-        users=Cisl.query.filter_by(clientid=str(current_user.id)).order_by(Cisl.id.desc()).all()
 
 
-    print(current_user)
- 
-    if current_user == None:
-        flash("Welcome to the Dashboard" + current_user.email, "Success")
-        flash(f"There was a problem")
-    return render_template('current.html',unique_code=unique_code, instock=instock, title='dashboard',form=form,total_claims=total_claims,
-            current_time=current_time, greeting=greeting, message=message, users=users, challenges=challenges)
+
 
 @app.route('/adminlogin/<int:userid>', methods=['GET', 'POST'])
 def adminlogin(userid):
@@ -1861,6 +1874,7 @@ def adminlogin(userid):
 @login_required
 def allclients():
     if current_user.role == 'admin':
+        # users = Person.query.order_by(Person.id.desc()).all()
         users = Person.query.filter_by(role="client").order_by(Person.id.desc()).all()
         # staff = User.query.order_by(User.id.desc()).all()
         print(users)
@@ -1919,7 +1933,7 @@ def homelook():
     if current_user.role == 'admin':
         total_medicals=Hospital.query.count()
     else:
-        total_medicals=Hospital.query.filter_by(clientid=str(current_user.id)).count()
+        total_medicals=Hospital.query.filter_by(id=str(current_user.id)).count()
     
     
     
@@ -2504,7 +2518,7 @@ def login():
             print ("Logged in:" + user.code + " " + user.email)
             print(form.password.data) 
             flash("Welcome to your dashboard " + " "  + user.name ,  'success')
-            return redirect(url_for('main'))
+            return redirect(url_for('homelook'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
              

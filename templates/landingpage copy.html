@@ -29,12 +29,12 @@
   <!-- 
     - favicon
   -->
-  <link rel="shortcut icon" href="/static/images/cl.jpg" style="border-radius:30px;" type="image/svg+xml">
+  <link rel="shortcut icon" href="static/images/cl.jpg" style="border-radius:30px;" type="image/svg+xml">
 
   <!-- 
     - custom css link
   -->
-  <link rel="stylesheet" href="/static/assets/css/kinda.css">
+  <link rel="stylesheet" href="static/assets/css/kinda.css">
 
   <!-- 
     - google font link
@@ -103,12 +103,118 @@
                       </div>
                       <hr>
 
+                    {% if current_user.role =='admin'%}
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/homelook">
+                          <i class="bi bi-house"></i> Dashboard
+                      </a>
+                  </li><hr>
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/allclients">
+                          <i class="bi bi-house"></i> All Clients
+                      </a>
+                  </li>
+
+
+                 
+                <hr class="navbar-divider my-5 opacity-20 ">
+
+                <li class="nav-item ">
+                  <a class="nav-link" href="/main">
+                      <i class="bi bi-envelope-check"></i> All Claims
+                  </a>
+              </li>
+              <hr class="navbar-divider my-5 opacity-20 ">
+
+              <li class="nav-item ">
+                <a class="nav-link" href="/medicals">
+                    <i class="bi bi-envelope-check"></i> Medical Administration 
+                </a>
+            </li>
+            <hr class="navbar-divider my-5 opacity-20 ">
+
+            <li class="nav-item ">
+              <a class="nav-link" href="/auth">
+                  <i class="bi bi-envelope-check"></i> All Staff
+              </a>
+          </li>
+
+          <hr class="navbar-divider my-5 opacity-20 ">
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/searchcode">
+                <i class="bi bi-envelope-check"></i>Search
+            </a>
+        </li>
+         
+                <hr class="navbar-divider my-5 opacity-20 ">
+                <li class="nav-item">
+                    <a class="nav-link" href="/person">
+                        <i class="bi bi-gear"></i> Settings
+                    </a>
+                </li>
+                  {% elif current_user.role =='hospital' %}
+
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/homelook">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <hr class="navbar-divider my-5 opacity-20 ">
+                 
+               
+
+                <li class="nav-item ">
+                  <a class="nav-link" href="/searchcode">
+                      <i class="bi bi-envelope-check"></i>Search
+                  </a>
+              </li>
+             
+                    <hr class="navbar-divider my-5 opacity-20 ">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/person">
+                            <i class="bi bi-gear"></i> Settings
+                        </a>
+                    </li>
+
+                    {% else %}
+
                     <li class="nav-item ">
                       <a class="nav-link" href="/homelook">
                           <i class="bi bi-house"></i> Dashboard
                       </a>
                   </li>
-                 
+                  <hr class="navbar-divider my-5 opacity-20 ">
+
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/main">
+                        <i class="bi bi-envelope-check"></i> All Claims
+                    </a>
+                </li>
+                <hr class="navbar-divider my-5 opacity-20 ">
+
+               
+              <li class="nav-item ">
+                <a class="nav-link" href="/auth">
+                    <i class="bi bi-envelope-check"></i>All Staff
+                </a>
+            </li>
+
+            <hr class="navbar-divider my-5 opacity-20 ">
+
+              <li class="nav-item ">
+                <a class="nav-link" href="/searchcode">
+                    <i class="bi bi-envelope-check"></i>Search
+                </a>
+            </li>
+           
+                  <hr class="navbar-divider my-5 opacity-20 ">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/person">
+                          <i class="bi bi-gear"></i> Settings
+                      </a>
+                  </li>
+{%endif%}
                 </ul>
                 <!-- Divider -->
                 <hr class="navbar-divider my-5 opacity-20 ">
@@ -196,9 +302,9 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
-                            <div class="logo mb-5">
-                                <a href="#"><img src="/static/cisl/img/web2.png" style="width:50px; margin:auto;" alt="#"></a>
-                              </div>
+                            <!--<div class="logo mb-5">
+                                <a href="#"><img src="static/cisl/img/web2.png" style="width:50px; margin:auto;" alt="#"></a>
+                              </div>-->
                            
                             </span>
                             </h6>
@@ -335,285 +441,157 @@
 
         <main class="py-6 bg-surface-secondary">
          
-        
+            {% block body %}
             <div>
+               <!-- <div class="container">
+                   
+
+                    
+                </div>-->
+            </div>
+            {% endblock%}
     
+           
+          </main>
 
 
-<div class="container-fluid" >
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-success" role="alert">
-          {{ message }}
-        </div>
-        
-        
-      {% endfor %}
-    {% endif %}
-    {% endwith %}
-    <br>
-
-    {% if low_quantity_flash %}
-    <div class="alert alert-danger" role="alert">
-        {{ low_quantity_flash }}
     </div>
-{% endif %}
+</div>
 
 
+<script>
+    function generateRandomCode() {
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var codeLength = 6;
+        var code = '';
+        for (var i = 0; i < codeLength; i++) {
+            var randomIndex = Math.floor(Math.random() * characters.length);
+            code += characters.charAt(randomIndex);
+        }
+        return code;
+    }
 
-       
+    // Generate and display the unique code when the form is submitted
+    document.getElementById('faqForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the form from submitting
+        var uniqueCode = generateRandomCode();
+        document.getElementById('uniqueCode').innerText = 'Unique Code: ' + uniqueCode;
+    });
+</script>
 
-    <div class="container-fluid">
-       
-      
-       
-       
-        <div class="row g-6 mb-6">
-          
-            
-    
-          <div class="card shadow border-0 mb-7 ">
-            <div class="card-header d-flex " style="justify-content:space-between;">
-                <h5 class="mb-0">Report</h5>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover table-nowrap">
-                    <thead class="thead-light">
-                        <tr>
-                           
-                            <th scope="col">Patient Name</th>
-                            <th scope="col">Facility Visited</th>
-                            <th scope="col">Location of Facility</th>
-                            <th scope="col">Expense Type</th>
-                            <th scope="col">Type of treatment</th>
-                            <th scope="col">Amount Spent</th>
+ <!-- Bootstrap JavaScript and Popper.js (Order is important) -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-                          
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <tr>
+ <!-- Triggering the Toast -->
+<!-- Your existing HTML code -->
 
-                            
-                            
-    
-                            <td>
-                                {{users.patient_name}}
-                            </td>
-                            <td>
-                              
-                                   {{ users.facility}}
-                         
-                                
-                            </td>
-                            <td>
-                                    {{ users.location}}
-                                
-                            </td>
+<!-- Bootstrap JS (Make sure to include Popper.js and Bootstrap JS) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-                            <td>
-                               
-                              
-                                <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                                
-                                    {{users.expense}}
-                                </span>
-                             
-    
-                                </td>
+<!-- Your custom JavaScript code -->
 
-                            <td>
-                                <span class="badge badge-lg badge-dot">
-                                    Malaria
-                                </span>
-                            </td>
-    
-                            <td>
-                                <span class="badge badge-lg badge-dot">
-                                   Ghc {{users.amount}}
-                                </span>
-                            </td>
-                           
-                            
-                           
-    <!--
-                            <td class="text-end">
-                                <!--<a href="#" class="btn btn-sm btn-neutral">Update</a>
-                                <button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
-                                    <i class="bi bi-box-arrow-right"></i>
-                                </button>
-                            </td>-->
-                        </tr>
-    
-                        
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer border-0 py-5">
-                <span class="text-muted text-sm">Showing General Report</span>
-            </div>
-        </div>
-      
-     
-    </div>
-    
-    
-       <!-- <div class="card-footer border-0 py-5">
-            <span class="text-muted text-sm" style="margin-left:500px; margin:">Powered by PrestoGhana</span>
-        </div>
--->
 
+<!-- Your existing HTML code -->
+
+
+  <script async="" type="text/javascript" src="https://www.myhealth1st.com.au/mh1-widget/2021/popup.v3.js"></script>
+  <!-- End of MyHealth1st Widget code -->
+
+  <!-- 
+    - custom js link
+
+  <!-- 
+    - ionicon link
+  -->
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
   
-    </div>
-</div>
+  <!-- <script defer src="//firebase/8.9.1/firebase-storage.js"></script> -->
+  
 
-</div>
-
-
-
-</main>
-
-
-</div>
-</div>
-
-
-<script>
-function generateRandomCode() {
-var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-var codeLength = 6;
-var code = '';
-for (var i = 0; i < codeLength; i++) {
-var randomIndex = Math.floor(Math.random() * characters.length);
-code += characters.charAt(randomIndex);
-}
-return code;
-}
-
-// Generate and display the unique code when the form is submitted
-document.getElementById('faqForm').addEventListener('submit', function(event) {
-event.preventDefault();  // Prevent the form from submitting
-var uniqueCode = generateRandomCode();
-document.getElementById('uniqueCode').innerText = 'Unique Code: ' + uniqueCode;
-});
-</script>
-
-<!-- Bootstrap JavaScript and Popper.js (Order is important) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Triggering the Toast -->
-<!-- Your existing HTML code -->
-
-<!-- Bootstrap JS (Make sure to include Popper.js and Bootstrap JS) -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
-<!-- Your custom JavaScript code -->
-
-
-<!-- Your existing HTML code -->
-
-
-<script async="" type="text/javascript" src="https://www.myhealth1st.com.au/mh1-widget/2021/popup.v3.js"></script>
-<!-- End of MyHealth1st Widget code -->
-
-<!-- 
-- custom js link
-
-<!-- 
-- ionicon link
--->
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
-
-<!-- <script defer src="//firebase/8.9.1/firebase-storage.js"></script> -->
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-// Simulate delay for demonstration purposes
-setTimeout(function () {
-// Hide loading screen and display content
-document.getElementById("loadingScreen").style.display = "none";
-document.getElementById("mainContent").style.display = "block";
-}, 2000); // Adjust the delay time as needed
-});
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Simulate delay for demonstration purposes
+        setTimeout(function () {
+            // Hide loading screen and display content
+            document.getElementById("loadingScreen").style.display = "none";
+            document.getElementById("mainContent").style.display = "block";
+        }, 2000); // Adjust the delay time as needed
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Triggering the Toast -->
-<script>
-var toastElement = new bootstrap.Toast(document.querySelector('.toast'));
-toastElement.show();
-</script>
+  <!-- Triggering the Toast -->
+  <script>
+    var toastElement = new bootstrap.Toast(document.querySelector('.toast'));
+    toastElement.show();
+  </script>
+  
+  
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
 
-
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
-
-<!-- <script defer src="//firebase/8.9.1/firebase-storage.js"></script> -->
-
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
+  
+  <!-- <script defer src="//firebase/8.9.1/firebase-storage.js"></script> -->
+  
 <!-- Bootstrap JS (Make sure to include Popper.js and Bootstrap JS) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 <!-- Your custom JavaScript code -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-var liveToastBtn = document.getElementById('liveToastBtn');
-var liveToast = new bootstrap.Toast(document.getElementById('liveToast'));
+    document.addEventListener('DOMContentLoaded', function () {
+        var liveToastBtn = document.getElementById('liveToastBtn');
+        var liveToast = new bootstrap.Toast(document.getElementById('liveToast'));
 
-liveToastBtn.addEventListener('click', function () {
-liveToast.show();
-});
-});
+        liveToastBtn.addEventListener('click', function () {
+            liveToast.show();
+        });
+    });
 </script>
 
-<script>
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-apiKey: "AIzaSyBPHDVrXV4nn_4agQgWFItDlS8z9cvq5zw",
-authDomain: "centralalumni.firebaseapp.com",
-projectId: "centralalumni",
-storageBucket: "centralalumni.appspot.com",
-messagingSenderId: "270504690849",
-appId: "1:270504690849:web:b03ee12ab92e157196dce0",
-measurementId: "G-9T21K58F10"
-};
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBPHDVrXV4nn_4agQgWFItDlS8z9cvq5zw",
+      authDomain: "centralalumni.firebaseapp.com",
+      projectId: "centralalumni",
+      storageBucket: "centralalumni.appspot.com",
+      messagingSenderId: "270504690849",
+      appId: "1:270504690849:web:b03ee12ab92e157196dce0",
+      measurementId: "G-9T21K58F10"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <script src="static/assets/js/script.js"></script>
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-</script>
-<script src="/static/assets/js/script.js"></script>
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-<!-- 
-- ionicon link
--->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
 
 </body>
 

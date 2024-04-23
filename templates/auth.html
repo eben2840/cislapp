@@ -27,6 +27,8 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col"></th>
+                        <th scope="col">Client ID</th>
+                        <th scope="col">Company</th>
                         <th scope="col">Name</th>
                         <th scope="col">CISL ID</th>
                         <th scope="col">Telephone</th>
@@ -52,12 +54,32 @@
                     {%for users in users%} 
                    
                     <tr>
+
+                        <td>
+                            <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
+                        
+                                {{users.clientname}}
+                            </a>
+                            
+                            
+                        </td>
+
+                        
                         <td>
                             <img src={{users.image_file}} style="width:100px;" class="avatar avatar-sm rounded-square me-2">
                             
                             
                         </td>
+                        <td>
+                            <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
+                        
+                                {{users.company}}
+                            </a>
+                            
+                            
+                        </td>
 
+                    
                         <td>
                             <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
                         
@@ -96,7 +118,7 @@
                         {{users. email}} 
                     </td>
                     <td>
-                        {{medial_amount}} 
+                       Ghc1000 {{medial_amount}} 
                     </td>
 
                     <td>

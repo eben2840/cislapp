@@ -23,25 +23,9 @@
 
 <div class="container-fluid">
    
-     
+     {% if current_user.role == 'client'%}
 
-  <div class="row " style="">
-    <p class="fs-5"><b>CISL Claims</b></p>      
-    <div class="col-xl-4 col-sm-6 col-12">
-        <div class="card shadow border-0 bg-green-100">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <span class="h1 font-bold mb-0">{{total_claims}}</span>
-                        <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Claims</span>
-                    </div>
-                    
-                </div>
-                
-            </div>
-        </div>
-    </div>
-  
+     <div class="row " style="">
    
   
     <div class="col-xl-4 col-sm-6 col-12">
@@ -72,8 +56,126 @@
             </div>
         </div>
     </div>
-</dvi>
 
+
+    {%elif current_user.role == 'hospital' %}
+    <div class="row " style="">
+    <div class="col-xl-6 col-sm-6 col-12 ">
+        <div class="card shadow border-0 bg-orange-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col ">
+                        <span class="h1 font-bold mb-0">{{current_user.name}}</span>
+                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Hospital Dashboard</span>
+                    </div>
+                   
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="col-xl-6 col-sm-6 col-12 ">
+            <div class="card shadow border-0 bg-orange-100">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col ">
+                            <span class="h1 font-bold mb-0">{{total_medicals}}</span>
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Medical Listings</span>
+                        </div>
+                       
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        {% elif current_user.role == 'claim'%}
+        <div class="row " style="">
+            <p class="fs-5"><b>CISL Claims</b></p> 
+            <div class="col-xl-6 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-green-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <span class="h1 font-bold mb-0">Welcome {{current_user.name}}</span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Make a claim</span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>     
+            <div class="col-xl-6 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-green-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <span class="h1 font-bold mb-0">{{total_claims}}</span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Claims</span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+    
+          
+
+            {% else %}
+            <div class="row " style="">
+                <p class="fs-5"><b>CISL Claims</b></p>      
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="card shadow border-0 bg-green-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <span class="h1 font-bold mb-0">{{total_claims}}</span>
+                                    <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Claims</span>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="card shadow border-0 bg-blue-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <span class="h1 font-bold mb-0">{{total_client}}</span>
+                                    <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Staff</span>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-sm-6 col-12 ">
+                    <div class="card shadow border-0 bg-orange-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col ">
+                                    <span class="h1 font-bold mb-0">{{total_medicals}}</span>
+                                    <span class="h6 font-semibold text-muted text-sm d-block mb-2">Medical Listings</span>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        {%endif%}
+      
+</dvi>
+<!--
 <div class="row g-6 mb-6" style="">
     
 <p class="fs-5"><b> Medical Administration</b></p>
@@ -152,27 +254,27 @@
                              <hr>
                              <div class="card-body"> 
                                 <div class="row"> 
-                                  
-                                    <!---->
-                                      <button type="button" style="margin-top:20px; width:230px; margin:auto; "class="btn btn-primary position-relative">
-                                          <i class="bi bi-plus"></i>   Add CISL Staff
-                                         </button>   
-                                 </div>             
-                            </div>
-                   
-                    </div>
-                    </div>
-                    
-                </div>     
-            </div>
-        </div>
-     </a>
-    </div>
+
+                                    <!--
+                                    <button type="button" style="margin-top:20px; width:230px; margin:auto; "class="btn btn-primary position-relative">
+                                        <i class="bi bi-plus"></i>   Add CISL Staff
+                                       </button>   
+                               </div>             
+                          </div>
+                 
+                  </div>
+                  </div>
+                  
+              </div>     
+          </div>
+      </div>
+   </a>
+  </div>
 
 </div>
 
 
-
+-->
 
 
         

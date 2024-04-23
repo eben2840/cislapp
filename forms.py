@@ -20,6 +20,7 @@ class RegistrationForm(FlaskForm):
 class Adduser(FlaskForm):
     fullname = StringField('fullname')
     campus= SelectField('campus', choices=[('Gender','Gender'),('Male', 'Male'), ('Female','Female') ], default=None )
+    company= StringField('Company')
     reason= StringField('reason')
     email= StringField('email')
     qualities= StringField('qualities')
