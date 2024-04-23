@@ -16,6 +16,43 @@
       
       
 
+
+        <p class="fs-5"><b>CISL Claims Dashboard</b></p> 
+            <div class="col-xl-6 mt-5 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-green-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <img src="https://pngfreepic.com/wp-content/uploads/2022/04/Health-insurance-claim-form-protective-shield-Free-Vector.png?v=1663485998" style="width:100px;">
+
+                            <div class="col">
+
+                                <span class="h1 font-bold mb-0">{{total_medicals}} </span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Medical Administration</span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>     
+            <div class="col-xl-6 mt-5 col-sm-6 col-12">
+                <div class="card shadow border-0 bg-white-100">
+                    <div class="card-body">
+                        <div class="row">
+                           <img src="https://png.pngtree.com/png-vector/20190729/ourmid/pngtree-team-business-ceo-executive-leader-leadership-person-abstr-png-image_1622431.jpg" style="width:100px;">
+                            <div class="col">
+                                <span class="h1 font-bold mb-0">{{total_client}}</span>
+                                <span class="h4 font-semibold text-muted text-sm d-block mb-2">Total Staff</span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
       <div class="card shadow border-0 mb-7">
         <div class="card-header d-flex" style="justify-content:space-between;">
             <h5 class="mb-0">All Staff</h5>
@@ -28,13 +65,12 @@
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Client ID</th>
-                        <th scope="col">Company</th>
                         <th scope="col">Name</th>
                         <th scope="col">CISL ID</th>
                         <th scope="col">Telephone</th>
                         <th scope="col">ID CARD </th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Email</th>
+                        <!--<th scope="col">Gender</th>-->
+                      <!--  <th scope="col">Email</th>-->
                       <!--  <th scope="col">Medical_Bill</th>-->
                         <th scope="col">Dependant 1</th>
                         <th scope="col">Dependant 2</th>
@@ -56,10 +92,7 @@
                     <tr>
 
                         <td>
-                            <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
-                        
-                                {{users.clientname}}
-                        s    </a>
+                           
                             
                             
                         </td>
@@ -70,14 +103,7 @@
                             
                             
                         </td>
-                        <td>
-                            <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
-                        
-                                {{users.company}}
-                            </a>
-                            
-                            
-                        </td>
+                       
 
                     
                         <td>
@@ -110,14 +136,16 @@
                         </td>
 
                        
-                       <td>
+                      
+                       
+                      
+                  <!--  
+                     <td>
                         {{users.campus}}
                        </td>
-                       
-                       <td>
+                     <td>
                         {{users. email}} 
-                    </td>
-                  <!--  <td>
+                    </td><td>
                        Ghc1000 {{medial_amount}} 
                     </td>-->
 

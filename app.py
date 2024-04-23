@@ -1071,7 +1071,11 @@ def main():
 
     message = Message.query.count()
 
-    total_claims=Cisl.query.count()
+    if current_user.role == 'admin':
+        total_claims=Cisl.query.count()
+    else:
+        total_claims=Cisl.query.filter_by(clientid=str(current_user.id)).count()
+    
 
     if current_user.role == 'admin':
         users = Cisl.query.order_by(Cisl.id.desc()).all()
@@ -1199,12 +1203,26 @@ def addstaff():
 @app.route('/auth', methods=['POST','GET'])
 @login_required
 def auth():
+      
+    if current_user.role == 'admin':
+        total_client=User.query.count()
+    else:
+        total_client=User.query.filter_by(clientname=str(current_user.id)).count()
+    
+
+    #Hospital Module
+    if current_user.role == 'admin':
+        total_medicals=Hospital.query.count()
+    else:
+        total_medicals=Hospital.query.filter_by(clientname=str(current_user.id)).count()
+    
+    
     if current_user.role =='admin':
         users=User.query.order_by(User.id.desc()).all()
         print(users)
     else:
         users=User.query.filter_by(clientname=str(current_user.id)).order_by(User.id.desc()).all()
-    return render_template("auth.html",users=users)
+    return render_template("auth.html",users=users, total_client=total_client,total_medicals=total_medicals )
 
 
 
@@ -1917,6 +1935,7 @@ def homelook():
         return redirect('homelook')
     
     print(form.errors)
+    
     if current_user.role == 'admin':
         total_claims=Cisl.query.count()
     else:
