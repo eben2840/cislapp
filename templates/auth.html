@@ -35,7 +35,7 @@
                         <th scope="col">ID CARD </th>
                         <th scope="col">Gender</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Medical_Bill</th>
+                      <!--  <th scope="col">Medical_Bill</th>-->
                         <th scope="col">Dependant 1</th>
                         <th scope="col">Dependant 2</th>
                         <th scope="col">Dependant 3</th>
@@ -59,7 +59,7 @@
                             <a class="text-heading font-semibold" href="{{ url_for('hospital', userid=users.id) }}">
                         
                                 {{users.clientname}}
-                            </a>
+                        s    </a>
                             
                             
                         </td>
@@ -117,9 +117,9 @@
                        <td>
                         {{users. email}} 
                     </td>
-                    <td>
+                  <!--  <td>
                        Ghc1000 {{medial_amount}} 
-                    </td>
+                    </td>-->
 
                     <td>
                         {{users. dependant_1}} 
