@@ -35,7 +35,7 @@ app=Flask(__name__)
 CORS(app)
 # 'postgresql://postgres:new_password@45.222.128.55:5432/src'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:new_password@45.222.128.55:5432/eben'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://eben:eben2840@45.222.128.210:5432/ebendb'
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("CENTRAL_MINISTRY_DB_URL","sqlite:///test.db")
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:new_password@45.222.128.55:5432/src'
 app.config['SECRET_KEY'] ="thisismysecretkey"
@@ -595,15 +595,10 @@ def send_email():
         
         
         user = User.query.first()
-        # HTML content of the email
-        if user:
-            session['user_id'] = user.id
-        else:
-        # Handle the case where the user object is not found or doesn't have an ID
-            print("Broo you dont have access")
+       
 # users = User.query.order_by(User.id.desc()).all()   
         users=User.query.order_by(User.id.desc()).all()
-        html_content = render_template('printout.html',users=users, session_user_id=session['user_id'])
+        html_content = render_template('printout.html',users=users)
         
         # return render_template("emailsender.html",users=users)
 
