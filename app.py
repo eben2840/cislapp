@@ -1685,6 +1685,7 @@ def makeclaim():
 
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def homme():
         return render_template("index1.html")
 
@@ -2532,7 +2533,7 @@ def login():
             print ("Logged in:" + user.code + " " + user.email)
             print(form.password.data) 
             flash("Welcome to your dashboard " + " "  + user.name ,  'success')
-            return redirect(url_for('homelook'))
+            return redirect(url_for('/'))
         else:
             flash(f'Incorrect details, please try again', 'danger')
              
