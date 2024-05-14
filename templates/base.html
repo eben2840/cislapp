@@ -73,9 +73,57 @@
         <link rel="stylesheet" href="static/cisl/css/style.css">
         <link rel="stylesheet" href="static/cisl/css/responsive.css">
 		<style>
-    .hidden {
-        display: none;
-    }
+    
+			:root {
+				
+				--dark: #14183E;
+			}
+/*** Case Study ***/
+.case-item img {
+	width: 100%;
+
+	height: 400px;
+	object-fit:cover;
+	border-radius: 15px;
+    transition: .5s;
+}
+  
+.case-item:hover img {
+    transform: scale(1.2);
+	
+}
+  
+.case-overlay {
+    position: absolute;
+    padding: 20px;
+    width: 100%;
+    height: 400px;
+    top: 0;
+	border-radius: 15px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    background: linear-gradient(rgba(3, 7, 41, 0), var(--dark));
+    z-index: 1;
+}
+
+.case-overlay small {
+    display: inline-block;
+    padding: 3px 15px;
+    color: #FFFFFF;
+    background: rgba(20, 24, 62, .7);
+    border-radius: 25px;
+    margin-bottom: 15px;
+}
+
+.case-overlay span.btn:hover {
+    color: var(--primary);
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
 </style>
     </head>
     <body><!DOCTYPE html>
@@ -181,16 +229,15 @@
 													<li><a href="#">Medical Administration</a></li>
 												</ul>
 											</li>
-											<li><a href="/claims">Claims</a>
-											</li>
-											<!--<li><a href="">Insurance Products<i class="icofont-rounded-down"></i></a>
+											
+											<li><a href="">Insurance Products<i class="icofont-rounded-down"></i></a>
 												<ul class="dropdown">
 													<li><a href="#">Property Damage</a></li>
 													<li><a href="#">Vehicle Insurance</a></li>
 													<li><a href="#">Fire and Allied Perils</a></li>
 													<li><a href="#">Life Insurance</a></li>
 												</ul>
-											</li>-->
+											</li>
 
 											<li><a href="/aboutus">About Us</a>
 											</li>

@@ -371,9 +371,9 @@
 
     <div class="card">
       <div class="card-body">
-        Balance Left: {{medial_amount}} 
+        Balance Left: {{users.medial_amount}} 
         <div class="d-flex justify-content-center">
-          <img src={{users.image_file}} style="width:200px;">
+          <img src={{users.image_file}} style="width:200px; border-radius:20px;">
          
         </div>
         
@@ -388,9 +388,9 @@
           <span class="btn btn-sm btn-rectangle btn-neutral text-danger-hover">
             Report
       </span></a>-->
-      <a href="{{ url_for('hospital', userid=users.id) }}" style="text-decoration: none; color: #992621;"> 
+      <a href="{{ url_for('hospital', userid=users.id) }}" style="text-decoration: none; color: #992621; "> 
         <span class="btn btn-sm btn-rectangle btn-neutral text-danger-hover">
-          Forms
+          Medical Claims
         </a>
         <hr>
         

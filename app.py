@@ -1171,6 +1171,7 @@ def addstaff():
             new=User(
                 clientname = current_user.id,
                 fullname=form.fullname.data,      
+                   company=form.company.data,
                    position=form.position.data,
                    dependant_1=form.dependant_1.data,
                    dependant_2=form.dependant_2.data,
@@ -1255,7 +1256,7 @@ def hospital(userid):
     if form.validate_on_submit():
         hospital= Hospital(
                 userid=userid,
-                companyname=company.name,
+                # companyname=company.name,
                 clientid=staff.clientid,
                 staffname=staff.qualities,
                 staffunique_code=staff.unique_code,
@@ -1271,7 +1272,7 @@ def hospital(userid):
         db.session.commit()
         print(hospital)
         flash("Medical Scheme Utilisation Sent, We will reach out to you soon.", "success")
-        return redirect('/')    
+        return redirect('/homelook')    
     elif not staff:
         flash("Inactive User")
         return redirect(url_for('homelook'))
@@ -1714,6 +1715,19 @@ def showchallenge():
 @app.route('/faq', methods=['GET', 'POST'])
 def faq():
     return render_template("faq.html")
+
+
+@app.route('/experience_client', methods=['GET', 'POST'])
+def experiencee():
+    return render_template("experiencee.html")
+
+@app.route('/coverage', methods=['GET', 'POST'])
+def coverage():
+    return render_template("coverage.html")
+
+@app.route('/premiums', methods=['GET', 'POST'])
+def premiums():
+    return render_template("premiums.html")
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
