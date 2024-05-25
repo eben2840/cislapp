@@ -1581,6 +1581,10 @@ def stockmaster():
 def claims():
     return render_template("claims.html")
 
+@app.route('/medicaladministration', methods=['POST','GET'])
+def medicaladministration():
+    return render_template("meds.html")
+
 
 
 @app.route('/verify_code', methods=['GET', 'POST'])
@@ -1686,7 +1690,6 @@ def makeclaim():
 
 
 @app.route('/', methods=['GET', 'POST'])
-@login_required
 def homme():
         return render_template("index1.html")
 
